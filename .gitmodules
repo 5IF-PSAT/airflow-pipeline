@@ -1,0 +1,3 @@
+[submodule "event_streaming"]
+	path = event_streaming
+	url = https://github.com/5IF-Data-Engineering/event-streaming.git

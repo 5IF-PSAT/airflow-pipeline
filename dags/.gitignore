@@ -1,0 +1,5 @@
+*.sql
+*.xlsx
+*~
+__pycache__
+data
