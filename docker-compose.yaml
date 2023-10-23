@@ -232,10 +232,20 @@ services:
     depends_on:
       - zookeeper
 
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+      - 27018:27018
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
   event-streaming:
     build:
       context: ./event_streaming
-      dockerfile: Dockerfiles
+      dockerfile: Dockerfile
     image: nmngo248/event-streaming:latest
     container_name: event-streaming
     ports:
@@ -245,11 +255,16 @@ services:
     environment:
       - KAFKA_HOST=kafka
       - KAFKA_PORT=9092
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_USERNAME=root
+      - MONGO_PASSWORD=example
       - PYTHONUNBUFFERED=1
       - TZ=Europe/Paris
     hostname: event-streaming
     depends_on:
       - kafka
+      - mongo
 
   kafka-consumer:
     build: 

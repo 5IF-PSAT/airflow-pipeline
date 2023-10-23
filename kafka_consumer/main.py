@@ -28,28 +28,9 @@ def initialize_topic():
 
 # initialize_topic()
 
-def config(filename='database.ini', section='postgresql'):
-    # create a parser
-    parser = ConfigParser()
-    # read config file
-    parser.read(filename)
-
-    # get section, default to postgresql
-    db = {}
-    if parser.has_section(section):
-        params = parser.items(section)
-        for param in params:
-            db[param[0]] = param[1]
-    else:
-        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
-    return db
-
-
-params = config()
-
 # connect to the PostgreSQL server
-print('Connecting to the PostgreSQL database...')
-conn = psycopg2.connect(**params)
+conn = psycopg2.connect(host=POSTGRES_HOST, port=POSTGRES_PORT, database=POSTGRES_DB,
+                        user=POSTGRES_USER, password=POSTGRES_PASSWORD)
 
 # create a cursor
 cur = conn.cursor()
@@ -69,12 +50,12 @@ def consumer_event(topic_name: str):
         date_time = datetime.datetime(int(str_date_time[0:4]), int(str_date_time[5:7]), int(str_date_time[8:10]),
                                       int(str_date_time[11:13]), int(str_date_time[14:16]), int(str_date_time[17:19]),
                                       tzinfo=pytz.timezone('Europe/Paris'))
-        query = """
-            INSERT INTO events (name, description, date_time)
-            VALUES (%s, %s, %s);
-        """
-        cur.execute(query, (event['name'], event['description'], date_time))
-        conn.commit()
+        # query = """
+        #     INSERT INTO events (name, description, date_time)
+        #     VALUES (%s, %s, %s);
+        # """
+        # cur.execute(query, (event['name'], event['description'], date_time))
+        # conn.commit()
         print(event)
 
 
