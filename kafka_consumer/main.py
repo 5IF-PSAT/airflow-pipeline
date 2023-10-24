@@ -20,7 +20,7 @@ POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD', 'postgres')
 POSTGRES_DB = os.environ.get('POSTGRES_DB', 'psat')
 
 def initialize_topic():
-    topic_name = "weather_data_pipeline"
+    topic_name = "weather-data-pipeline"
     new_topic = NewTopic(name=topic_name, num_partitions=1, replication_factor=1)
     admin_client = KafkaAdminClient(bootstrap_servers=f'{KAFKA_HOST}:{KAFKA_PORT}')
     admin_client.create_topics(new_topics=[new_topic], validate_only=False)
@@ -61,6 +61,6 @@ def consumer_event(topic_name: str):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    consumer_event("weather_data_pipeline")
+    consumer_event("weather-data-pipeline")
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
