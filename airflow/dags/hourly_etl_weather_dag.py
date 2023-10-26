@@ -1,5 +1,6 @@
 # Bordeaux: (44.8389957, -0.5692577999999999)
 # Bourgogne: (47.151159, 4.892087)
+# Toronto: (43.653226, -79.383184)
 
 import airflow
 from airflow import DAG
@@ -7,9 +8,9 @@ from airflow.operators.bash_operator import BashOperator
 
 HOST = 'event-streaming'
 PORT = '8000'
-LATITUDE = '44.8389957'
-LONGITUDE = '-0.5692577999999999'
-CITY = 'bordeaux'
+LATITUDE = '43.653226'
+LONGITUDE = '-79.383184'
+CITY = 'Toronto'
 TOPIC_NAME = 'weather-data-pipeline'
 
 default_args = {
