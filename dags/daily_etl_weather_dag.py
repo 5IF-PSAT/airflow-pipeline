@@ -7,7 +7,7 @@ PORT = '8000'
 LATITUDE = '44.8389957'
 LONGITUDE = '-0.5692577999999999'
 CITY = 'bordeaux'
-TOPIC_NAME = 'weather_data_pipeline'
+TOPIC_NAME = 'weather-data-pipeline'
 
 default_args = {
     'owner': 'minh.ngo',
