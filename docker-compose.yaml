@@ -103,6 +103,19 @@ services:
       - kafka
       - mongo
 
+  # redis-dayofweek:
+  #   build:
+  #     context: ./redis_dayofweek
+  #     dockerfile: Dockerfile
+  #   image: nmngo248/redis-dayofweek:latest
+  #   container_name: redis-dayofweek
+  #   environment:
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+  #     - REDIS_DB=0
+  #   depends_on:
+  #     - redis
+
   # kafka-consumer:
   #   build: 
   #     context: ./kafka_consumer

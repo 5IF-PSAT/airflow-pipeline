@@ -30,7 +30,7 @@ end_date = '2017-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task1 = BashOperator(
     task_id='get_weather_data_2017',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}&daily=yes\"',
+    bash_command=f'/opt/airflow/scripts/daily_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
 )
 
@@ -40,7 +40,7 @@ end_date = '2018-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task2 = BashOperator(
     task_id='get_weather_data_2018',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}&daily=yes\"',
+    bash_command=f'/opt/airflow/scripts/daily_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
 )
 
@@ -50,7 +50,7 @@ end_date = '2019-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task3 = BashOperator(
     task_id='get_weather_data_2019',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}&daily=yes\"',
+    bash_command=f'/opt/airflow/scripts/daily_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
 )
 
@@ -60,7 +60,7 @@ end_date = '2020-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task4 = BashOperator(
     task_id='get_weather_data_2020',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}&daily=yes\"',
+    bash_command=f'/opt/airflow/scripts/daily_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
 )
 
@@ -70,7 +70,7 @@ end_date = '2021-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task5 = BashOperator(
     task_id='get_weather_data_2021',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}&daily=yes\"',
+    bash_command=f'/opt/airflow/scripts/daily_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
 )
 
@@ -80,7 +80,7 @@ end_date = '2022-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task6 = BashOperator(
     task_id='get_weather_data_2022',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}&daily=yes\"',
+    bash_command=f'/opt/airflow/scripts/daily_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
 )
 
