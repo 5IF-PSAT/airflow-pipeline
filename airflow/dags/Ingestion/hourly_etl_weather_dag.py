@@ -34,7 +34,7 @@ end_date = '2017-03-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task11 = BashOperator(
     task_id='get_weather_data_20171',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -45,7 +45,7 @@ end_date = '2017-06-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task12 = BashOperator(
     task_id='get_weather_data_20172',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -56,7 +56,7 @@ end_date = '2017-09-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task13 = BashOperator(
     task_id='get_weather_data_20173',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -67,7 +67,7 @@ end_date = '2017-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task14 = BashOperator(
     task_id='get_weather_data_20174',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -78,7 +78,7 @@ end_date = '2018-03-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task21 = BashOperator(
     task_id='get_weather_data_20181',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -89,7 +89,7 @@ end_date = '2018-06-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task22 = BashOperator(
     task_id='get_weather_data_20182',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -100,7 +100,7 @@ end_date = '2018-09-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task23 = BashOperator(
     task_id='get_weather_data_20183',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -111,7 +111,7 @@ end_date = '2018-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task24 = BashOperator(
     task_id='get_weather_data_20184',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -122,7 +122,7 @@ end_date = '2019-03-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task31 = BashOperator(
     task_id='get_weather_data_20191',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -133,7 +133,7 @@ end_date = '2019-06-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task32 = BashOperator(
     task_id='get_weather_data_20192',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -144,7 +144,7 @@ end_date = '2019-09-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task33 = BashOperator(
     task_id='get_weather_data_20193',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -155,7 +155,7 @@ end_date = '2019-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task34 = BashOperator(
     task_id='get_weather_data_20194',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -166,7 +166,7 @@ end_date = '2020-03-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task41 = BashOperator(
     task_id='get_weather_data_20201',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -177,7 +177,7 @@ end_date = '2020-06-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task42 = BashOperator(
     task_id='get_weather_data_20202',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -188,7 +188,7 @@ end_date = '2020-09-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task43 = BashOperator(
     task_id='get_weather_data_20203',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -199,7 +199,7 @@ end_date = '2020-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task44 = BashOperator(
     task_id='get_weather_data_20204',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -210,7 +210,7 @@ end_date = '2021-03-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task51 = BashOperator(
     task_id='get_weather_data_20211',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -221,7 +221,7 @@ end_date = '2021-06-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task52 = BashOperator(
     task_id='get_weather_data_20212',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -232,7 +232,7 @@ end_date = '2021-09-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task53 = BashOperator(
     task_id='get_weather_data_20213',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -243,7 +243,7 @@ end_date = '2021-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task54 = BashOperator(
     task_id='get_weather_data_20214',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -254,7 +254,7 @@ end_date = '2022-03-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task61 = BashOperator(
     task_id='get_weather_data_20221',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -265,7 +265,7 @@ end_date = '2022-06-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task62 = BashOperator(
     task_id='get_weather_data_20222',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -276,7 +276,7 @@ end_date = '2022-09-30'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task63 = BashOperator(
     task_id='get_weather_data_20223',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -287,7 +287,7 @@ end_date = '2022-12-31'
 file_name = start_date.replace('-', '') + '-' + end_date.replace('-', '')
 task64 = BashOperator(
     task_id='get_weather_data_20224',
-    bash_command=f'curl \"{HOST}:{PORT}/ingestion_weather/?topic_name={TOPIC_NAME}&lat={LATITUDE}&lon={LONGITUDE}&start_date={start_date}&end_date={end_date}&file_name={file_name}&city={CITY}\"',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {file_name} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )

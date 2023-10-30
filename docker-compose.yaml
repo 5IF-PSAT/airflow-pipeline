@@ -96,12 +96,19 @@ services:
       - MONGO_PORT=27017
       - MONGO_USERNAME=root
       - MONGO_PASSWORD=example
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=deng
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
       - PYTHONUNBUFFERED=1
       - TZ=Europe/Paris
     hostname: event-streaming
     depends_on:
       - kafka
       - mongo
+      - postgres
+
 
   # redis-dayofweek:
   #   build:
