@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  shardsvr2_1:
+    container_name: shardsvr2_1
+    image: mongo:6.0.2-focal
+    command: mongod --shardsvr --replSet shard2_rs --dbpath /data/db --port 27017
+    ports:
+      - 20004:27017
+    hostname: shardsvr2_1
+    volumes:
+      - type: bind
+        source: ../../tmp/mongo-data-shardsvr2_1
+        target: /data/db
+
+  shardsvr2_2:
+    container_name: shardsvr2_2
+    image: mongo:6.0.2-focal
+    command: mongod --shardsvr --replSet shard2_rs --dbpath /data/db --port 27017
+    ports:
+      - 20005:27017
+    hostname: shardsvr2_2
+    volumes:
+      - type: bind
+        source: ../../tmp/mongo-data-shardsvr2_2
+        target: /data/db
+
+  shardsvr2_3:
+    container_name: shardsvr2_3
+    image: mongo:6.0.2-focal
+    command: mongod --shardsvr --replSet shard2_rs --dbpath /data/db --port 27017
+    ports:
+      - 20006:27017
+    hostname: shardsvr2_3
+    volumes:
+      - type: bind
+        source: ../../tmp/mongo-data-shardsvr2_3
+        target: /data/db
