@@ -11,7 +11,6 @@ PORT = '8000'
 LATITUDE = '43.653226'
 LONGITUDE = '-79.383184'
 CITY = 'Toronto'
-TOPIC_NAME = 'weather-data-pipeline'
 
 default_args = {
     'owner': 'minh.ngo',
@@ -33,7 +32,7 @@ start_date = '2017-01-01'
 end_date = '2017-03-31'
 task11 = BashOperator(
     task_id='get_weather_data_20171',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -43,7 +42,7 @@ start_date = '2017-04-01'
 end_date = '2017-06-30'
 task12 = BashOperator(
     task_id='get_weather_data_20172',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -53,7 +52,7 @@ start_date = '2017-07-01'
 end_date = '2017-09-30'
 task13 = BashOperator(
     task_id='get_weather_data_20173',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -63,7 +62,7 @@ start_date = '2017-10-01'
 end_date = '2017-12-31'
 task14 = BashOperator(
     task_id='get_weather_data_20174',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -73,7 +72,7 @@ start_date = '2018-01-01'
 end_date = '2018-03-31'
 task21 = BashOperator(
     task_id='get_weather_data_20181',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -83,7 +82,7 @@ start_date = '2018-04-01'
 end_date = '2018-06-30'
 task22 = BashOperator(
     task_id='get_weather_data_20182',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -93,7 +92,7 @@ start_date = '2018-07-01'
 end_date = '2018-09-30'
 task23 = BashOperator(
     task_id='get_weather_data_20183',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -103,7 +102,7 @@ start_date = '2018-10-01'
 end_date = '2018-12-31'
 task24 = BashOperator(
     task_id='get_weather_data_20184',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -113,7 +112,7 @@ start_date = '2019-01-01'
 end_date = '2019-03-31'
 task31 = BashOperator(
     task_id='get_weather_data_20191',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -123,7 +122,7 @@ start_date = '2019-04-01'
 end_date = '2019-06-30'
 task32 = BashOperator(
     task_id='get_weather_data_20192',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -133,7 +132,7 @@ start_date = '2019-07-01'
 end_date = '2019-09-30'
 task33 = BashOperator(
     task_id='get_weather_data_20193',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -143,7 +142,7 @@ start_date = '2019-10-01'
 end_date = '2019-12-31'
 task34 = BashOperator(
     task_id='get_weather_data_20194',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -153,7 +152,7 @@ start_date = '2020-01-01'
 end_date = '2020-03-31'
 task41 = BashOperator(
     task_id='get_weather_data_20201',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -163,7 +162,7 @@ start_date = '2020-04-01'
 end_date = '2020-06-30'
 task42 = BashOperator(
     task_id='get_weather_data_20202',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -173,7 +172,7 @@ start_date = '2020-07-01'
 end_date = '2020-09-30'
 task43 = BashOperator(
     task_id='get_weather_data_20203',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -183,7 +182,7 @@ start_date = '2020-10-01'
 end_date = '2020-12-31'
 task44 = BashOperator(
     task_id='get_weather_data_20204',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -193,7 +192,7 @@ start_date = '2021-01-01'
 end_date = '2021-03-31'
 task51 = BashOperator(
     task_id='get_weather_data_20211',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -203,7 +202,7 @@ start_date = '2021-04-01'
 end_date = '2021-06-30'
 task52 = BashOperator(
     task_id='get_weather_data_20212',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -213,7 +212,7 @@ start_date = '2021-07-01'
 end_date = '2021-09-30'
 task53 = BashOperator(
     task_id='get_weather_data_20213',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -223,7 +222,7 @@ start_date = '2021-10-01'
 end_date = '2021-12-31'
 task54 = BashOperator(
     task_id='get_weather_data_20214',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -233,7 +232,7 @@ start_date = '2022-01-01'
 end_date = '2022-03-31'
 task61 = BashOperator(
     task_id='get_weather_data_20221',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -243,7 +242,7 @@ start_date = '2022-04-01'
 end_date = '2022-06-30'
 task62 = BashOperator(
     task_id='get_weather_data_20222',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -253,7 +252,7 @@ start_date = '2022-07-01'
 end_date = '2022-09-30'
 task63 = BashOperator(
     task_id='get_weather_data_20223',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
@@ -263,7 +262,7 @@ start_date = '2022-10-01'
 end_date = '2022-12-31'
 task64 = BashOperator(
     task_id='get_weather_data_20224',
-    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {TOPIC_NAME} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
+    bash_command=f'/opt/airflow/scripts/hourly_weather.sh {HOST} {PORT} {LATITUDE} {LONGITUDE} {start_date} {end_date} {CITY}',
     dag=dag,
     trigger_rule='none_failed'
 )
