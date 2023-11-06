@@ -33,112 +33,17 @@ services:
       interval: 5s
       timeout: 30s
       retries: 50
-
-  configsvr1:
-    container_name: configsvr1
-    extends:
-      file: ./shard_mongo/config_server/docker-compose.yaml
-      service: configsvr1
-  configsvr2:
-    container_name: configsvr2
-    extends:
-      file: ./shard_mongo/config_server/docker-compose.yaml
-      service: configsvr2
-  configsvr3:
-    container_name: configsvr3
-    extends:
-      file: ./shard_mongo/config_server/docker-compose.yaml
-      service: configsvr3
-
-  shardsvr1_1:
-    container_name: shardsvr1_1
-    extends:
-      file: ./shard_mongo/shard_server1/docker-compose.yaml
-      service: shardsvr1_1
-    depends_on:
-      configsvr1:
-        condition: service_started
-      configsvr2:
-        condition: service_started
-      configsvr3:
-        condition: service_started
-  shardsvr1_2:
-    container_name: shardsvr1_2
-    extends:
-      file: ./shard_mongo/shard_server1/docker-compose.yaml
-      service: shardsvr1_2
-    depends_on:
-      configsvr1:
-        condition: service_started
-      configsvr2:
-        condition: service_started
-      configsvr3:
-        condition: service_started
-  shardsvr1_3:
-    container_name: shardsvr1_3
-    extends:
-      file: ./shard_mongo/shard_server1/docker-compose.yaml
-      service: shardsvr1_3
-    depends_on:
-      configsvr1:
-        condition: service_started
-      configsvr2:
-        condition: service_started
-      configsvr3:
-        condition: service_started
-
-  shardsvr2_1:
-    container_name: shardsvr2_1
-    extends:
-      file: ./shard_mongo/shard_server2/docker-compose.yaml
-      service: shardsvr2_1
-    depends_on:
-      configsvr1:
-        condition: service_started
-      configsvr2:
-        condition: service_started
-      configsvr3:
-        condition: service_started
-  shardsvr2_2:
-    container_name: shardsvr2_2
-    extends:
-      file: ./shard_mongo/shard_server2/docker-compose.yaml
-      service: shardsvr2_2
-    depends_on:
-      configsvr1:
-        condition: service_started
-      configsvr2:
-        condition: service_started
-      configsvr3:
-        condition: service_started
-  shardsvr2_3:
-    container_name: shardsvr2_3
-    extends:
-      file: ./shard_mongo/shard_server2/docker-compose.yaml
-      service: shardsvr2_3
-    depends_on:
-      configsvr1:
-        condition: service_started
-      configsvr2:
-        condition: service_started
-      configsvr3:
-        condition: service_started
-
   mongo:
-    container_name: mongo
-    extends:
-      file: ./shard_mongo/mongo_router/docker-compose.yaml
-      service: mongo
+    image: mongo:6.0.2-focal
     hostname: mongo
+    container_name: mongo
     restart: always
-    depends_on:
-      configsvr1:
-        condition: service_started
-      configsvr2:
-        condition: service_started
-      configsvr3:
-        condition: service_started
-
+    ports:
+        - "27017:27017"
+    volumes:
+      - type: bind
+        source: ./tmp/mongo-data
+        target: /data/db
   neo:
     image: neo4j:5.1.0
     hostname: neo

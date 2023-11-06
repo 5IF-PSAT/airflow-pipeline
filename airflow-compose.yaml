@@ -50,7 +50,7 @@ services:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
       retries: 5
-  redis-airflow: 
+  redis-airflow:
     image: redis:6.0.16-bullseye
     hostname: redis-airflow
     container_name: redis-airflow
