@@ -153,25 +153,6 @@ services:
     volumes:
       - ./tmp/neo4j-data:/data
 
-  zookeeper:
-    container_name: zookeeper
-    image: ubuntu/zookeeper:edge
-    ports:
-      - "2181:2181"
-
-  kafka:
-    container_name: kafka
-    image: ubuntu/kafka:3.1-22.04_edge
-    ports:
-      - "9092:9092"
-    environment:
-      - TZ=UTC+2
-      - ZOOKEEPER_HOST=zookeeper
-      - ZOOKEEPER_PORT=2181
-    hostname: kafka
-    depends_on:
-      - zookeeper
-
   event-streaming:
     build:
       context: ./event_streaming
@@ -181,8 +162,6 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - KAFKA_HOST=kafka
-      - KAFKA_PORT=9092
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
       - POSTGRES_HOST=postgres
@@ -194,7 +173,6 @@ services:
       - TZ=Europe/Paris
     hostname: event-streaming
     depends_on:
-      - kafka
       - mongo
       - postgres
 

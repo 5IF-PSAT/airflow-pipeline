@@ -108,3 +108,18 @@ CREATE TABLE IF NOT EXISTS staging_weather_year_month_weekday_weekend (
     max_wind_speed double precision,
     min_wind_speed double precision
 );
+
+CREATE TABLE IF NOT EXISTS staging_weather_weekday_weekend_hour (
+    day_type varchar(255) NOT NULL,
+    hour integer NOT NULL,
+    avg_temperature double precision,
+    min_temperature double precision,
+    max_temperature double precision,
+    avg_humidity double precision,
+    avg_rain double precision,
+    max_rain double precision,
+    min_rain double precision,
+    avg_wind_speed double precision,
+    max_wind_speed double precision,
+    min_wind_speed double precision
+);
