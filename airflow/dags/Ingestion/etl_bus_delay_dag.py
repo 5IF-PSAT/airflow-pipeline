@@ -25,7 +25,7 @@ dag = DAG(
 year = 2017
 task1 = BashOperator(
     task_id='get_bus_delay_data_2017',
-    bash_command=f'chmod +x /opt/airflow/scripts/bus_delay.sh && /opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+    bash_command=f'/opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
     dag=dag,
 )
 
@@ -33,7 +33,7 @@ task1 = BashOperator(
 year = 2018
 task2 = BashOperator(
     task_id='get_bus_delay_data_2018',
-    bash_command=f'chmod +x /opt/airflow/scripts/bus_delay.sh && /opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+    bash_command=f'/opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
     dag=dag,
 )
 
@@ -41,7 +41,7 @@ task2 = BashOperator(
 year = 2019
 task3 = BashOperator(
     task_id='get_bus_delay_data_2019',
-    bash_command=f'chmod +x /opt/airflow/scripts/bus_delay.sh && /opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+    bash_command=f'/opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
     dag=dag,
 )
 
@@ -49,7 +49,7 @@ task3 = BashOperator(
 year = 2020
 task4 = BashOperator(
     task_id='get_bus_delay_data_2020',
-    bash_command=f'chmod +x /opt/airflow/scripts/bus_delay.sh && /opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+    bash_command=f'/opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
     dag=dag,
 )
 
@@ -57,7 +57,7 @@ task4 = BashOperator(
 year = 2021
 task5 = BashOperator(
     task_id='get_bus_delay_data_2021',
-    bash_command=f'chmod +x /opt/airflow/scripts/bus_delay.sh && /opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+    bash_command=f'/opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
     dag=dag,
 )
 
@@ -65,7 +65,7 @@ task5 = BashOperator(
 year = 2022
 task6 = BashOperator(
     task_id='get_bus_delay_data_2022',
-    bash_command=f'chmod +x /opt/airflow/scripts/bus_delay.sh && /opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+    bash_command=f'/opt/airflow/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
     dag=dag,
 )
 
