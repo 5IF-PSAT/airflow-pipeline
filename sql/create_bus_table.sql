@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS staging_bus_delay_weekday_weekend_hour_location_incid
     count_delay integer,
     avg_gap double precision,
     min_gap double precision,
-    max_gap double precision
+    max_gap double precision,
+    count_gap integer
 ) PARTITION BY LIST (day_type);
 
 CREATE TABLE IF NOT EXISTS staging_bus_delay_weekday PARTITION OF 

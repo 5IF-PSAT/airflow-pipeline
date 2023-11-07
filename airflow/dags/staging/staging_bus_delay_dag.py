@@ -25,7 +25,9 @@ create_table_task = PostgresOperator(
     task_id='create_table_task',
     postgres_conn_id='postgres_default',
     sql=f"""
-        CREATE TABLE IF NOT EXISTS staging_bus_delay_weekday_weekend_hour_location_incident (
+        CREATE TABLE IF NOT EXISTS staging_bus_delay (
+            year integer,
+            month integer,
             day_type varchar(255) NOT NULL,
             hour integer,
             location varchar(255),
@@ -36,17 +38,30 @@ create_table_task = PostgresOperator(
             count_delay integer,
             avg_gap double precision,
             min_gap double precision,
-            max_gap double precision
-        ) PARTITION BY LIST (day_type);
+            max_gap double precision,
+            count_gap integer
+        ) PARTITION BY LIST (year);
 
-        CREATE TABLE IF NOT EXISTS staging_bus_delay_weekday PARTITION OF 
-        staging_bus_delay_weekday_weekend_hour_location_incident FOR VALUES IN ('weekday');
+        CREATE TABLE IF NOT EXISTS staging_bus_delay_2017 PARTITION OF 
+        staging_bus_delay FOR VALUES IN (2017);
 
-        CREATE TABLE IF NOT EXISTS staging_bus_delay_weekend PARTITION OF
-        staging_bus_delay_weekday_weekend_hour_location_incident FOR VALUES IN ('weekend');
+        CREATE TABLE IF NOT EXISTS staging_bus_delay_2018 PARTITION OF
+        staging_bus_delay FOR VALUES IN (2018);
 
-        CREATE INDEX IF NOT EXISTS staging_bus_delay_weekday_weekend_hour_location_incident_idx 
-        ON staging_bus_delay_weekday_weekend_hour_location_incident (day_type);
+        CREATE TABLE IF NOT EXISTS staging_bus_delay_2019 PARTITION OF
+        staging_bus_delay FOR VALUES IN (2019);
+
+        CREATE TABLE IF NOT EXISTS staging_bus_delay_2020 PARTITION OF
+        staging_bus_delay FOR VALUES IN (2020);
+
+        CREATE TABLE IF NOT EXISTS staging_bus_delay_2021 PARTITION OF
+        staging_bus_delay FOR VALUES IN (2021);
+
+        CREATE TABLE IF NOT EXISTS staging_bus_delay_2022 PARTITION OF
+        staging_bus_delay FOR VALUES IN (2022);
+
+        CREATE INDEX IF NOT EXISTS staging_bus_delay_year_idx 
+        ON staging_bus_delay (year);
     """,
     dag=dag,
     autocommit=True,
@@ -54,7 +69,7 @@ create_table_task = PostgresOperator(
 
 charge_data = BashOperator(
     task_id='charge_data_postgres',
-    bash_command=f'curl \"{HOST}:{PORT}/staging_weekday_weekend_hour_location_incident_bus_delay/\"',
+    bash_command=f'curl \"{HOST}:{PORT}/staging_full_bus_delay/\"',
     dag=dag,
     trigger_rule='none_failed',
 )
