@@ -3,7 +3,7 @@ from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.postgres_operator import PostgresOperator
 
-HOST = 'event-streaming'
+HOST = 'pipeline-api'
 PORT = '8000'
 
 default_args = {

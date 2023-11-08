@@ -58,12 +58,12 @@ services:
     volumes:
       - ./tmp/neo4j-data:/data
 
-  event-streaming:
+  pipeline-api:
     build:
-      context: ./event_streaming
+      context: ./pipeline_api
       dockerfile: Dockerfile
-    image: nmngo248/event-streaming:latest
-    container_name: event-streaming
+    image: nmngo248/pipeline-api:latest
+    container_name: pipeline-api
     ports:
       - "8000:8000"
     environment:
@@ -76,7 +76,7 @@ services:
       - POSTGRES_PASSWORD=
       - PYTHONUNBUFFERED=1
       - TZ=Europe/Paris
-    hostname: event-streaming
+    hostname: pipeline-api
     depends_on:
       - mongo
       - postgres

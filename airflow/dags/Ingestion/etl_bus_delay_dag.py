@@ -2,7 +2,7 @@ import airflow
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 
-HOST = 'event-streaming'
+HOST = 'pipeline-api'
 PORT = '8000'
 CITY = 'Toronto'
 

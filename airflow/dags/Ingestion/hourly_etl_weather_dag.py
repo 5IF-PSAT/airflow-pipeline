@@ -6,7 +6,7 @@ import airflow
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 
-HOST = 'event-streaming'
+HOST = 'pipeline-api'
 PORT = '8000'
 LATITUDE = '43.653226'
 LONGITUDE = '-79.383184'
