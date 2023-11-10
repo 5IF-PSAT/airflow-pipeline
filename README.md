@@ -34,7 +34,7 @@ The data pipeline are built using [Apache Airflow](https://airflow.apache.org/).
 
 ## Pipeline API
 Pipeline API is a Restful API that is built using [Django](https://www.djangoproject.com/) and [Django Rest Framework](https://www.django-rest-framework.org/). The API is used to trigger the data pipeline and to get the status of the data pipeline. The API is defined in the `pipeline_api` folder.
-API Documentation can be found [here](./pipeline_api/README.md#api-documentation).
+API Documentation can be found [here](https://github.com/5IF-Data-Engineering/pipeline-api/blob/main/README.md#api-documentation).
 
 ## Star Schema
 The data is stored in the [PostgreSQL](https://www.postgresql.org/) database. The data is stored in the star schema. The star schema is shown in the figure below.
