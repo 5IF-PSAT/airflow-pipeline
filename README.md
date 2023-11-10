@@ -1,24 +1,92 @@
 # Project Meteorif
-## Description
-We create a data pipeline to process the data from the weather and bus delay in the city of Toronto, from 2017 to 2022. 
+## Table of Contents
+- [Project Meteorif](#project-meteorif)
+  - [Table of Contents](#table-of-contents)
+- [Introduction](#introduction)
+- [Architecture](#architecture)
+  - [Airflow](#airflow)
+  - [Pipeline API](#pipeline-api)
+  - [Star Schema](#star-schema)
+- [Pipelines](#pipelines)
+  - [Ingestion](#ingestion)
+  - [Staging](#staging)
+  - [Enrichment](#enrichment)
+  - [Production](#production)
+- [Future development](#future-development)
+- [Project Submission Checklist](#project-submission-checklist)
+- [How to run](#how-to-run)
+- [References](#references)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
 
-## Data Source
-- [Weather](https://www.kaggle.com/sumanthvrao/daily-climate-time-series-data)
-- [Bus Delay](https://open.toronto.ca/dataset/ttc-bus-delay-data/)
-- [Bus Route](https://open.toronto.ca/dataset/ttc-routes-and-schedules/)
-- [Bus Stop](https://open.toronto.ca/dataset/ttc-routes-and-schedules/)
-- [Bus Stop Location](https://open.toronto.ca/dataset/ttc-routes-and-schedules/)
-- [Bus Stop Time](https://open.toronto.ca/dataset/ttc-routes-and-schedules/)
+# Introduction
+This project is part of the Foundation of Data Engineering course in [INSA Lyon](https://www.insa-lyon.fr/en/). 
+The goal of this project is to build multiple data pipelines to process data from the weather and the bus delay time in Toronto from 2017 to 2022 and make it available for analysis.
 
-## Data Pipeline
+# Architecture
+The architecture of this project is shown in the figure below. The data is ingested from the [Toronto Open Data](https://open.toronto.ca/) and [Open Weather Map](https://openweathermap.org/). The data is then processed by the data pipeline. The data is then available for analysis.
 
-## How to run (first time)
-1. Clone the repo to your local machine using `git clone https://github.com/5IF-Data-Engineering/deng-project.git`
-### Initialize Airflow
-1. `docker-compose up airflow-init`. If the exit code is 0, then you can stop the container using `docker-compose down`.
+![Architecture](./assets/architecture.png)
 
-### Set up the MongoDB shard cluster
-1. Config Server. 
-- Run `docker-compose up -d configsvr1 configsvr2 configsvr3`.
-- Run `docker-compose exec -it configsvr1 sh` to enter the Config Server container
-- Run `mongosh mongodb://localhost:27017`
+## Airflow
+The data pipeline are built using [Apache Airflow](https://airflow.apache.org/). The data pipeline is built using the [DAG](https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#dags) concept in Airflow. The DAGs are defined in the `dags` folder.
+
+## Pipeline API
+Pipeline API is a Restful API that is built using [Django](https://www.djangoproject.com/) and [Django Rest Framework](https://www.django-rest-framework.org/). The API is used to trigger the data pipeline and to get the status of the data pipeline. The API is defined in the `pipeline_api` folder.
+API Documentation can be found [here](pipeline_api/README.md#api-documentation).
+
+## Star Schema
+The data is stored in the [PostgreSQL](https://www.postgresql.org/) database. The data is stored in the star schema. The star schema is shown in the figure below.
+
+[//]: # (![Star Schema]&#40;./assets/star_schema.png&#41;)
+
+# Pipelines
+The data pipeline is divided into 4 stages: Ingestion, Staging, Enrichment, and Production.
+
+## Ingestion
+
+## Staging
+
+## Enrichment
+
+## Production
+
+# Future development
+- [ ] Add more data sources
+- [ ] Add more data pipelines
+- [ ] Add more data analysis
+- [ ] Add more data visualization
+
+# Project Submission Checklist
+- [ ] Repository with the code, well documented
+- [x] Docker-compose file to run the environment
+- [ ] Detailed description of the various steps
+- [x] Report with the project design steps divided per area
+- [x] Example dataset: the project testing should work offline, i.e., you need to have some sample data points.
+- [ ] Slides for the project presentation. You can do them too in markdown too.
+- [ ] Use airflow + pandas + mongodb + postgres + neo4j
+- [x] Using REDIS for speeding up steps
+- [x] STAR schema design includes maintenance upon updates
+- [ ] Creativity: data viz, serious analysis, performance analysis, extensive cleansing.
+- [x] Launching docker containers via airflow to schedule job
+
+# How to run
+
+# References
+
+# License
+
+# Contact
+- [Minh NGO](mailto:ngoc-minh.ngo@insa-lyon.fr)
+
+# Acknowledgements
+- [INSA Lyon](https://www.insa-lyon.fr/en/)
+- [Open Weather Map](https://openweathermap.org/)
+- [Toronto Open Data](https://open.toronto.ca/)
+- [GitHub Copilot](https://copilot.github.com/)
+- [ChatGPT](https://chat.openai.com/)
+- [Apache Airflow](https://airflow.apache.org/)
+- [Django](https://www.djangoproject.com/)
+- [Django Rest Framework](https://www.django-rest-framework.org/)
+- [PostgreSQL](https://www.postgresql.org/)
