@@ -1,5 +1,6 @@
 import airflow
 from airflow import DAG
+from docker.types import Mount
 from datetime import timedelta, datetime
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.postgres_operator import PostgresOperator
@@ -33,6 +34,11 @@ create_table_task = PostgresOperator(
     task_id='create_prod_table_task',
     postgres_conn_id='postgres_default',
     sql=f"""
+        DROP TABLE IF EXISTS production_bus_weather_fact CASCADE;
+        DROP TABLE IF EXISTS production_time_dimension CASCADE;
+        DROP TABLE IF EXISTS production_location_dimension CASCADE;
+        DROP TABLE IF EXISTS production_incident_dimension CASCADE;
+
         CREATE TABLE IF NOT EXISTS production_time_dimension (
             id bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
             year integer NOT NULL,
@@ -43,9 +49,7 @@ create_table_task = PostgresOperator(
 
         CREATE TABLE IF NOT EXISTS production_location_dimension (
             id bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-            name varchar(255) NOT NULL,
-            latitude double precision,
-            longitude double precision
+            name varchar(255) NOT NULL
         );
 
         CREATE TABLE IF NOT EXISTS production_incident_dimension (
@@ -55,9 +59,9 @@ create_table_task = PostgresOperator(
 
         CREATE TABLE IF NOT EXISTS production_bus_weather_fact (
             id bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-            time_id bigint NOT NULL REFERENCES production_time_dimension(id),
-            location_id bigint NOT NULL REFERENCES production_location_dimension(id),
-            incident_id bigint NOT NULL REFERENCES production_incident_dimension(id),
+            time_id bigint NOT NULL REFERENCES production_time_dimension(id) ON DELETE SET NULL,
+            location_id bigint NOT NULL REFERENCES production_location_dimension(id) ON DELETE SET NULL,
+            incident_id bigint NOT NULL REFERENCES production_incident_dimension(id) ON DELETE SET NULL,
             avg_temperature double precision,
             min_temperature double precision,
             max_temperature double precision,
@@ -85,6 +89,8 @@ create_table_task = PostgresOperator(
     trigger_rule='none_failed',
 )
 
+project_path = '/home/nmngo/Documents/project-deng'
+
 insert_data = DockerOperator(
     task_id='insert_data_star_schema',
     mount_tmp_dir=False,
@@ -93,7 +99,7 @@ insert_data = DockerOperator(
     auto_remove=True,
     xcom_all=True,
     api_version='auto',
-    docker_conn_id='docker_default',
+    docker_url="tcp://docker-socket-proxy:2375",
     dag=dag,
     trigger_rule='none_failed'
 )

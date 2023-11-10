@@ -25,10 +25,10 @@ x-airflow-common: &airflow-common
     - ./airflow/scripts:/opt/scripts
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-0}"
   depends_on:
-    - redis-airflow
-      # condition: service_healthy
-    - postgres-airflow
-      # condition: service_healthy
+    redis-airflow:
+      condition: service_healthy
+    postgres-airflow:
+      condition: service_healthy
 services:
   postgres-airflow:
     image: postgres:13.8-bullseye

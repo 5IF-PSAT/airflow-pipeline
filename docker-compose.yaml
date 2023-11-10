@@ -35,9 +35,9 @@ services:
     container_name: mongo
     restart: always
     ports:
-        - "27017:27017"
+      - "27017:27017"
     volumes:
-        - ./tmp/mongo-data:/data/db
+      - ./tmp/mongo-data:/data/db
   neo:
     image: neo4j:5.1.0
     hostname: neo

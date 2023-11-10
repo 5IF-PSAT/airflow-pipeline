@@ -5,7 +5,7 @@
 
 import os
 import psycopg2
-from geopy.geocoders import Nominatim
+import time
 
 POSTGRES_HOST = os.environ.get('POSTGRES_HOST', 'postgres')
 POSTGRES_PORT = os.environ.get('POSTGRES_PORT', '5432')
@@ -48,20 +48,11 @@ def insert_data_location_dimension():
     search_query = "SELECT DISTINCT location FROM joined_bus_weather"
     cursor.execute(search_query)
     results = cursor.fetchall()
-    geolocator = Nominatim(user_agent="your_app_name")
     for result in results:
-        location_string = result[0] + ", Toronto, Ontario, Canada"
-        location_info = geolocator.geocode(location_string)
-        if location_info:
-            insert_query = """INSERT INTO production_location_dimension (name, latitude, longitude) 
-                VALUES (%s, %s, %s)
-                """
-            result = (result[0], location_info.latitude, location_info.longitude)
-        else:
-            insert_query = """INSERT INTO production_location_dimension (name) 
-                VALUES (%s)
-                """
-            result = (result[0],)
+        insert_query = """INSERT INTO production_location_dimension (name) 
+            VALUES (%s)
+        """
+        result = (result[0],)
         cursor.execute(insert_query, result)
         conn.commit()
     cursor.close()
@@ -127,7 +118,7 @@ def create_star_schema():
             max_gap, count_gap) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, 
             %s, %s, %s, %s, %s, %s, %s, %s, %s, 
-            %s, %s)
+            %s, %s, %s)
         """
         cursor.execute(insert_query, (time_id, location_id, incident_id, result[6], result[7], result[8], result[9],
                                       result[10], result[11], result[12], result[13], result[14], result[15],
@@ -138,11 +129,34 @@ def create_star_schema():
     conn.close()
 
 
+def extract_data_to_csv():
+    conn = psycopg2.connect(
+        host=POSTGRES_HOST,
+        port=POSTGRES_PORT,
+        user=POSTGRES_USERNAME,
+        password=POSTGRES_PASSWORD,
+        database=POSTGRES_DB
+    )
+    cursor = conn.cursor()
+    extract_query = """
+        COPY production_time_dimension TO '/var/lib/postgresql/data/time_dim.csv' WITH CSV HEADER;
+        COPY production_location_dimension TO '/var/lib/postgresql/data/location_dim.csv' WITH CSV HEADER;
+        COPY production_incident_dimension TO '/var/lib/postgresql/data/incident_dim.csv' WITH CSV HEADER;
+        COPY production_bus_weather_fact TO '/var/lib/postgresql/data/fact_table.csv' WITH CSV HEADER;
+    """
+    cursor.execute(extract_query)
+    cursor.close()
+    conn.close()
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    start_time = time.time()
     insert_data_time_dimension()
     insert_data_location_dimension()
     insert_data_incident_dimension()
     create_star_schema()
+    extract_data_to_csv()
+    print("--- %s seconds ---" % (time.time() - start_time))
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
