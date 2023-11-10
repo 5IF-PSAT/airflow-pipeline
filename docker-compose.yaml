@@ -10,9 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - type: bind
-        source: ./tmp/postgres-data
-        target: /var/lib/postgresql/data
+      - ./tmp/postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 5s
@@ -25,9 +23,7 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - type: bind
-        source: ./tmp/redis-data
-        target: /data
+      - ./tmp/redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -41,9 +37,7 @@ services:
     ports:
         - "27017:27017"
     volumes:
-      - type: bind
-        source: ./tmp/mongo-data
-        target: /data/db
+        - ./tmp/mongo-data:/data/db
   neo:
     image: neo4j:5.1.0
     hostname: neo

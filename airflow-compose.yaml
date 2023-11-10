@@ -25,10 +25,10 @@ x-airflow-common: &airflow-common
     - ./airflow/scripts:/opt/scripts
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-0}"
   depends_on:
-    redis-airflow:
-      condition: service_healthy
-    postgres-airflow:
-      condition: service_healthy
+    - redis-airflow
+      # condition: service_healthy
+    - postgres-airflow
+      # condition: service_healthy
 services:
   postgres-airflow:
     image: postgres:13.8-bullseye
@@ -43,9 +43,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - type: bind
-        source: ./tmp/postgres-data-airflow
-        target: /var/lib/postgresql/data
+      - ./tmp/postgres-data-airflow:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
@@ -58,9 +56,7 @@ services:
     ports:
       - "6380:6379"
     volumes:
-      - type: bind
-        source: ./tmp/redis-data-airflow
-        target: /data
+      - ./tmp/redis-data-airflow:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s

@@ -87,10 +87,13 @@ create_table_task = PostgresOperator(
 
 insert_data = DockerOperator(
     task_id='insert_data_star_schema',
+    mount_tmp_dir=False,
     image='nmngo248/star-schema:latest',
     network_mode='meteorif',
     auto_remove=True,
-    docker_url='tcp://docker-socket-proxy:2375',
+    xcom_all=True,
+    api_version='auto',
+    docker_conn_id='docker_default',
     dag=dag,
     trigger_rule='none_failed'
 )
