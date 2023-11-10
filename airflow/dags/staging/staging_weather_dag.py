@@ -62,6 +62,9 @@ create_table_task = PostgresOperator(
 
         CREATE INDEX IF NOT EXISTS staging_weather_year_idx 
         ON staging_weather (year);
+
+        CREATE INDEX IF NOT EXISTS staging_weather_full_idx
+        ON staging_weather (year, month, day_type, hour);
     """,
     dag=dag,
     autocommit=True,
@@ -69,7 +72,7 @@ create_table_task = PostgresOperator(
 
 charge_data = BashOperator(
     task_id='charge_data_postgres',
-    bash_command=f'curl \"{HOST}:{PORT}/staging_full_weather/\"',
+    bash_command=f'/opt/scripts/staging_weather.sh {HOST} {PORT}',
     dag=dag,
     trigger_rule='none_failed',
 )

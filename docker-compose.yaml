@@ -74,26 +74,15 @@ services:
       - POSTGRES_DB=deng
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
       - PYTHONUNBUFFERED=1
       - TZ=Europe/Paris
     hostname: pipeline-api
     depends_on:
       - mongo
       - postgres
-
-
-  # redis-dayofweek:
-  #   build:
-  #     context: ./redis_dayofweek
-  #     dockerfile: Dockerfile
-  #   image: nmngo248/redis-dayofweek:latest
-  #   container_name: redis-dayofweek
-  #   environment:
-  #     - REDIS_HOST=redis
-  #     - REDIS_PORT=6379
-  #     - REDIS_DB=0
-  #   depends_on:
-  #     - redis
 
   postgres-airflow:
     container_name: postgres-airflow
@@ -131,6 +120,11 @@ services:
     extends:
       file: airflow-compose.yaml
       service: flower
+  docker-socket-proxy:
+    container_name: docker-socket-proxy
+    extends:
+      file: docker-socket-proxy.yaml
+      service: docker-socket-proxy
 networks:
   default:
     name: meteorif
