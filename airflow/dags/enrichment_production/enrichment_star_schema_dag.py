@@ -32,7 +32,7 @@ enrich_bus_weather = BashOperator(
 
 create_table_task = PostgresOperator(
     task_id='create_prod_table_task',
-    postgres_conn_id='postgres_default',
+    postgres_conn_id='postgres_production',
     sql=f"""
         DROP TABLE IF EXISTS production_bus_weather_fact CASCADE;
         DROP TABLE IF EXISTS production_time_dimension CASCADE;
@@ -88,8 +88,6 @@ create_table_task = PostgresOperator(
     dag=dag,
     trigger_rule='none_failed',
 )
-
-project_path = '/home/nmngo/Documents/project-deng'
 
 insert_data = DockerOperator(
     task_id='insert_data_star_schema',

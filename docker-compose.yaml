@@ -65,7 +65,7 @@ services:
       - MONGO_PORT=27017
       - POSTGRES_HOST=postgres
       - POSTGRES_PORT=5432
-      - POSTGRES_DB=deng
+      - POSTGRES_DB_STAGING=deng-staging
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=
       - REDIS_HOST=redis

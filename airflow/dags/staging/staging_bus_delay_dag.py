@@ -23,7 +23,7 @@ dag = DAG(
 
 create_table_task = PostgresOperator(
     task_id='create_table_task',
-    postgres_conn_id='postgres_default',
+    postgres_conn_id='postgres_staging',
     sql=f"""
         CREATE TABLE IF NOT EXISTS staging_bus_delay (
             year integer,
