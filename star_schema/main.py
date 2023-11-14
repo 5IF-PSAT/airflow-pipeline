@@ -11,8 +11,8 @@ POSTGRES_HOST = os.environ.get('POSTGRES_HOST', 'postgres')
 POSTGRES_PORT = os.environ.get('POSTGRES_PORT', '5432')
 POSTGRES_USERNAME = os.environ.get('POSTGRES_USERNAME', 'postgres')
 POSTGRES_PASSWORD = os.environ.get('POSTGRES_PASSWORD', 'postgres')
-POSTGRES_DB_STAGING = os.environ.get('POSTGRES_DB_STAGING', 'deng-staging')
-POSTGRES_DB_PRODUCTION = os.environ.get('POSTGRES_DB_PRODUCTION', 'deng-production')
+POSTGRES_DB_STAGING = os.environ.get('POSTGRES_DB_STAGING', 'deng_staging')
+POSTGRES_DB_PRODUCTION = os.environ.get('POSTGRES_DB_PRODUCTION', 'deng_production')
 
 
 def insert_data_time_dimension():
@@ -25,10 +25,25 @@ def insert_data_time_dimension():
     )
     cursor_stag = conn_stag.cursor()
     search_query = """
-        SELECT DISTINCT year, month, day_type, hour FROM joined_bus_weather
-        ORDER BY year, month, day_type, hour ASC;    
+        SELECT DISTINCT year INTO temp_year FROM joined_bus_weather
+        ORDER BY year ASC;
+
+        SELECT DISTINCT month INTO temp_month FROM joined_bus_weather
+        ORDER BY month ASC;
+
+        SELECT DISTINCT day_type INTO temp_day_type FROM joined_bus_weather
+        ORDER BY day_type ASC;
+
+        SELECT DISTINCT hour INTO temp_hour FROM joined_bus_weather
+        ORDER BY hour ASC;
     """
     cursor_stag.execute(search_query)
+    conn_stag.commit()
+    search_query_all = """
+        SELECT * FROM temp_year, temp_month, temp_day_type, temp_hour
+        ORDER BY year, month, day_type, hour ASC;
+    """
+    cursor_stag.execute(search_query_all)
     results = cursor_stag.fetchall()
     conn_prod = psycopg2.connect(
         host=POSTGRES_HOST,
