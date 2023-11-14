@@ -55,7 +55,7 @@ it is also stored in the Redis database to speed up the data pipeline. We divide
 Each year, we divide the bus data into 4 parts: January to March, April to June, July to September, and October to December. Each part is then processed in parallel. Inside each task, we consider that they are the small ETL pipelines. The small ETL pipelines are triggered by
 the API call, defined inside the BashOperator. Each BashOperator will execute the Shell script to process the data. The Shell script is defined in the `./airflow/scripts` folder.
 Inside each small ETL pipeline that we define inside the `pipeline_api`, the data is extracted from [Open Meteo API](https://open-meteo.com/en/docs), then transformed using Pandas, and finally loaded into the MongoDB database. We choose the MongoDB database for the ingestion stage because it is a NoSQL database and flexible, 
-which is suitable for storing the raw data. \
+which is suitable for storing the raw data.
 
 The weather data is ingested from the [Open Meteo API](https://open-meteo.com/en/docs). The data is ingested using the [Open Weather Map](https://openweathermap.org/) API. The data is then stored in the MongoDB database. The idea of the data pipeline is much similar to the bus delay time data ingestion. We divide the data by year. We then process the data in parallel. The weather data is also transformed using Pandas and loaded into the MongoDB database.
 
@@ -94,6 +94,20 @@ We extract the bus delay data and the weather data from the PostgreSQL database,
 
 # How to run
 ## Automated
+Clone the repository using the following command:
+```bash
+git clone https://github.com/5IF-Data-Engineering/deng-project.git
+```
+Update the submodules using the following command:
+```bash
+git submodule sync --recursive
+git submodule update --init --recursive
+```
+Using this command to run the data pipeline:
+```bash
+chmod +x start.sh
+./start.sh
+```
 
 ## Manual
 Clone the repository using the following command:
@@ -117,14 +131,14 @@ Initialize the Airflow database using the following command:
 ```bash
 docker-compose up airflow-init
 ```
-If 0 is returned, it means that the Airflow database is initialized successfully. Otherwise, you have to remove the `tmp` folder and run the command again. \
+If 0 is returned, it means that the Airflow database is initialized successfully. Otherwise, you have to remove the `tmp` folder and run the command again.
 
 After initializing the Airflow database, you can start the Airflow webserver and the scheduler using the following command:
 ```bash
 docker-compose up
 ```
 After starting the Airflow webserver and the scheduler, you can access the Airflow webserver at `http://localhost:8080/`. \
-You can access the Pipeline API at `http://localhost:8000/`. \
+You can access the Pipeline API at `http://localhost:8000/`.
 
 Add the following connections in the Airflow webserver:
 - `postgres_staging`: PostgreSQL for staging connection
@@ -133,9 +147,15 @@ Add the following connections in the Airflow webserver:
 docker exec -it airflow-webserver airflow connections add postgres_staging --conn-uri postgresql://postgres:@postgres:5432/deng_staging
 docker exec -it airflow-webserver airflow connections add postgres_production --conn-uri postgresql://postgres:@postgres:5432/deng_production
 ```
+Create the staging and production database in the PostgreSQL using the following command:
+```bash
+docker exec -it postgres psql -U postgres -c "CREATE DATABASE IF NOT EXISTS deng_staging;"
+docker exec -it postgres psql -U postgres -c "CREATE DATABASE IF NOT EXISTS deng_production;"
+```
+
 You need to build the Star Schema image used by DockerOperator using the following command:
 ```bash
-docker build -t nmngo248/star-schema:latest ./star-schema
+docker build -t nmngo248/star-schema:latest ./star_schema
 ```
 
 After running all the enrichment & production pipeline, if you want to extract the csv files from the PostgreSQL database, you can use the following command:
