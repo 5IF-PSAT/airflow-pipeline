@@ -133,12 +133,23 @@ docker-compose up airflow-init
 ```
 If 0 is returned, it means that the Airflow database is initialized successfully. Otherwise, you have to remove the `tmp` folder and run the command again.
 
+Add permission to execute for shell scripts
+```bash
+chmod +x ./airflow/scripts/*
+```
+
 After initializing the Airflow database, you can start the Airflow webserver and the scheduler using the following command:
 ```bash
-docker-compose up
+docker-compose up -d
 ```
 After starting the Airflow webserver and the scheduler, you can access the Airflow webserver at `http://localhost:8080/`. \
 You can access the Pipeline API at `http://localhost:8000/`.
+
+Create the staging and production database in the PostgreSQL using the following command:
+```bash
+docker exec -it postgres psql -U postgres -c "CREATE DATABASE deng_staging;"
+docker exec -it postgres psql -U postgres -c "CREATE DATABASE deng_production;"
+```
 
 Add the following connections in the Airflow webserver:
 - `postgres_staging`: PostgreSQL for staging connection
@@ -146,11 +157,6 @@ Add the following connections in the Airflow webserver:
 ```bash
 docker exec -it airflow-webserver airflow connections add postgres_staging --conn-uri postgresql://postgres:@postgres:5432/deng_staging
 docker exec -it airflow-webserver airflow connections add postgres_production --conn-uri postgresql://postgres:@postgres:5432/deng_production
-```
-Create the staging and production database in the PostgreSQL using the following command:
-```bash
-docker exec -it postgres psql -U postgres -c "CREATE DATABASE IF NOT EXISTS deng_staging;"
-docker exec -it postgres psql -U postgres -c "CREATE DATABASE IF NOT EXISTS deng_production;"
 ```
 
 You need to build the Star Schema image used by DockerOperator using the following command:
