@@ -166,7 +166,10 @@ docker build -t nmngo248/star-schema:latest ./star_schema
 
 After running all the enrichment & production pipeline, if you want to extract the csv files from the PostgreSQL database, you can use the following command:
 ```bash
-docker cp postgres:/var/lib/postgresql/data/*.csv /path/to/your/folder
+docker cp postgres:/var/lib/postgresql/data/time_dim.csv /path/to/your/folder
+docker cp postgres:/var/lib/postgresql/data/location_dim.csv /path/to/your/folder
+docker cp postgres:/var/lib/postgresql/data/incident_dim.csv /path/to/your/folder
+docker cp postgres:/var/lib/postgresql/data/fact_table.csv /path/to/your/folder
 ```
 
 # References

@@ -6,6 +6,8 @@ ENV POSTGRES_USERNAME=postgres
 ENV POSTGRES_PASSWORD=None
 ENV POSTGRES_DB_STAGING=deng_staging
 ENV POSTGRES_DB_PRODUCTION=deng_production
+ENV REDIS_HOST=redis
+ENV REDIS_PORT=6379
 
 # Path: /app
 RUN mkdir -p /app
@@ -15,4 +17,4 @@ COPY . /app/
 RUN pip install -r requirements.txt
 
 # Path: /app
-CMD ["python", "main.py"]
+# CMD ["python", "main.py"]
