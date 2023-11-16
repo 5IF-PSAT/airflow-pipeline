@@ -1,7 +1,8 @@
 host="$1"
 port="$2"
+year="$3"
 
-response_code=$(curl -w "%{http_code}\n" -o /tmp/response.json "$host:$port/staging_full_bus_delay/")
+response_code=$(curl -w "%{http_code}\n" -o /tmp/response.json "$host:$port/staging_full_bus_delay/?year=$year")
 
 if [ "$response_code" -eq 200 ]; then
   echo "HTTP Status Code: 200 OK"

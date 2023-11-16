@@ -70,11 +70,52 @@ create_table_task = PostgresOperator(
     autocommit=True,
 )
 
-charge_data = BashOperator(
-    task_id='charge_data_postgres',
-    bash_command=f'/opt/scripts/staging_bus_delay.sh {HOST} {PORT}',
+year = '2017'
+charge_data_2017 = BashOperator(
+    task_id='charge_data_postgres_2017',
+    bash_command=f'/opt/scripts/staging_bus_delay.sh {HOST} {PORT} {year}',
     dag=dag,
     trigger_rule='none_failed',
 )
 
-create_table_task >> charge_data
+year = '2018'
+charge_data_2018 = BashOperator(
+    task_id='charge_data_postgres_2018',
+    bash_command=f'/opt/scripts/staging_bus_delay.sh {HOST} {PORT} {year}',
+    dag=dag,
+    trigger_rule='none_failed',
+)
+
+year = '2019'
+charge_data_2019 = BashOperator(
+    task_id='charge_data_postgres_2019',
+    bash_command=f'/opt/scripts/staging_bus_delay.sh {HOST} {PORT} {year}',
+    dag=dag,
+    trigger_rule='none_failed',
+)
+
+year = '2020'
+charge_data_2020 = BashOperator(
+    task_id='charge_data_postgres_2020',
+    bash_command=f'/opt/scripts/staging_bus_delay.sh {HOST} {PORT} {year}',
+    dag=dag,
+    trigger_rule='none_failed',
+)
+
+year = '2021'
+charge_data_2021 = BashOperator(
+    task_id='charge_data_postgres_2021',
+    bash_command=f'/opt/scripts/staging_bus_delay.sh {HOST} {PORT} {year}',
+    dag=dag,
+    trigger_rule='none_failed',
+)
+
+year = '2022'
+charge_data_2022 = BashOperator(
+    task_id='charge_data_postgres_2022',
+    bash_command=f'/opt/scripts/staging_bus_delay.sh {HOST} {PORT} {year}',
+    dag=dag,
+    trigger_rule='none_failed',
+)
+
+create_table_task >> [charge_data_2017, charge_data_2018, charge_data_2019, charge_data_2020, charge_data_2021, charge_data_2022]
