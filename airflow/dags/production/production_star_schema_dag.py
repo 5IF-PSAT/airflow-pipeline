@@ -44,7 +44,9 @@ create_table_task = PostgresOperator(
 
         CREATE TABLE IF NOT EXISTS production_location_dimension (
             id bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-            name varchar(255) NOT NULL
+            name varchar(255) NOT NULL,
+            latitude double precision,
+            longitude double precision
         );
 
         CREATE TABLE IF NOT EXISTS production_incident_dimension (
