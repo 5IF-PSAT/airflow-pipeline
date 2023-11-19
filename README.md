@@ -148,7 +148,6 @@ You can access the Pipeline API at `http://localhost:8000/`.
 Create the staging and production database in the PostgreSQL using the following command:
 ```bash
 docker exec -it postgres psql -U postgres -c "CREATE DATABASE deng_staging;"
-docker exec -it postgres psql -U postgres -c "CREATE DATABASE deng_production;"
 ```
 
 Add the following connections in the Airflow webserver:
@@ -156,7 +155,6 @@ Add the following connections in the Airflow webserver:
 - `postgres_production`: PostgreSQL for production connection
 ```bash
 docker exec -it airflow-webserver airflow connections add postgres_staging --conn-uri postgresql://postgres:@postgres:5432/deng_staging
-docker exec -it airflow-webserver airflow connections add postgres_production --conn-uri postgresql://postgres:@postgres:5432/deng_production
 ```
 
 You need to build the Star Schema image used by DockerOperator using the following command:
