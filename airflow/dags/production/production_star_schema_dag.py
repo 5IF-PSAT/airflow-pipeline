@@ -25,63 +25,9 @@ dag = DAG(
 )
 
 
-create_table_task = PostgresOperator(
+create_table_task = BashOperator(
     task_id='create_prod_table_task',
-    postgres_conn_id='postgres_production',
-    sql=f"""
-        DROP TABLE IF EXISTS production_bus_weather_fact CASCADE;
-        DROP TABLE IF EXISTS production_time_dimension CASCADE;
-        DROP TABLE IF EXISTS production_location_dimension CASCADE;
-        DROP TABLE IF EXISTS production_incident_dimension CASCADE;
-
-        CREATE TABLE IF NOT EXISTS production_time_dimension (
-            id bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-            year integer NOT NULL,
-            month integer NOT NULL,
-            day_type varchar(255) NOT NULL,
-            hour integer NOT NULL
-        );
-
-        CREATE TABLE IF NOT EXISTS production_location_dimension (
-            id bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-            name varchar(255) NOT NULL,
-            latitude double precision,
-            longitude double precision
-        );
-
-        CREATE TABLE IF NOT EXISTS production_incident_dimension (
-            id bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-            name varchar(255) NOT NULL
-        );
-
-        CREATE TABLE IF NOT EXISTS production_bus_weather_fact (
-            id bigint NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-            time_id bigint NOT NULL REFERENCES production_time_dimension(id) ON DELETE SET NULL,
-            location_id bigint NOT NULL REFERENCES production_location_dimension(id) ON DELETE SET NULL,
-            incident_id bigint NOT NULL REFERENCES production_incident_dimension(id) ON DELETE SET NULL,
-            avg_temperature double precision,
-            min_temperature double precision,
-            max_temperature double precision,
-            avg_humidity double precision,
-            avg_rain double precision,
-            max_rain double precision,
-            min_rain double precision,
-            avg_wind_speed double precision,
-            max_wind_speed double precision,
-            min_wind_speed double precision,
-            avg_delay double precision,
-            min_delay double precision,
-            max_delay double precision,
-            count_delay integer,
-            avg_gap double precision,
-            min_gap double precision,
-            max_gap double precision,
-            count_gap integer
-        );
-
-        CREATE INDEX IF NOT EXISTS production_bus_weather_fact_full_idx
-        ON production_bus_weather_fact (time_id, location_id, incident_id);
-    """,
+    bash_command=f"/opt/scripts/create_prod_table.sh {HOST} {PORT}",
     dag=dag,
     trigger_rule='none_failed',
 )

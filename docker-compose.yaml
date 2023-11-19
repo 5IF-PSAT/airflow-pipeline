@@ -71,6 +71,8 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_DB=0
+      - SNOWFLAKE_USERNAME=${SNOWFLAKE_USERNAME}
+      - SNOWFLAKE_PASSWORD=${SNOWFLAKE_PASSWORD}
       - PYTHONUNBUFFERED=1
       - TZ=Europe/Paris
     hostname: pipeline-api
