@@ -12,6 +12,7 @@
   - [Staging](#staging)
   - [Enrichment](#enrichment)
   - [Production](#production)
+- [Presentation](#presentation)
 - [Future development](#future-development)
 - [Project Submission Checklist](#project-submission-checklist)
 - [How to run](#how-to-run)
