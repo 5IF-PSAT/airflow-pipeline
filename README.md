@@ -73,6 +73,11 @@ We extract the bus delay data and the weather data from the PostgreSQL database,
 
 ## Production
 
+We extract the data from the PostgreSQL database, then load it into the star schema on Snowflake. The data pipeline is shown in the figure below.
+
+# Presentation
+- Presentation available [here](https://docs.google.com/presentation/d/1dOCUSrn3HKGtE6lQaHa4q8Igz6fDY4AQtRPbG2OfbhQ/edit?usp=sharing)
+
 # Future development
 - [ ] Add more data sources
 - [ ] Add more data pipelines
@@ -85,8 +90,8 @@ We extract the bus delay data and the weather data from the PostgreSQL database,
 - [ ] Detailed description of the various steps
 - [x] Report with the project design steps divided per area
 - [x] Example dataset: the project testing should work offline, i.e., you need to have some sample data points.
-- [ ] Slides for the project presentation. You can do them too in markdown too.
-- [ ] Use airflow + pandas + mongodb + postgres + neo4j
+- [x] Slides for the project presentation. You can do them too in markdown too.
+- [x] Use airflow + pandas + mongodb + postgres
 - [x] Using REDIS for speeding up steps
 - [x] STAR schema design includes maintenance upon updates
 - [ ] Creativity: data viz, serious analysis, performance analysis, extensive cleansing.
@@ -162,20 +167,13 @@ You need to build the Star Schema image used by DockerOperator using the followi
 docker build -t nmngo248/star-schema:latest ./star_schema
 ```
 
-After running all the enrichment & production pipeline, if you want to extract the csv files from the PostgreSQL database, you can use the following command:
-```bash
-docker cp postgres:/var/lib/postgresql/data/time_dim.csv /path/to/your/folder
-docker cp postgres:/var/lib/postgresql/data/location_dim.csv /path/to/your/folder
-docker cp postgres:/var/lib/postgresql/data/incident_dim.csv /path/to/your/folder
-docker cp postgres:/var/lib/postgresql/data/fact_table.csv /path/to/your/folder
-```
-
 # References
 
 # License
 
 # Contact
 - [Minh NGO](mailto:ngoc-minh.ngo@insa-lyon.fr)
+- [Yazid SBAI](mailto:yazid.sbai@insa-lyon.fr)
 
 # Acknowledgements
 - [INSA Lyon](https://www.insa-lyon.fr/en/)
