@@ -17,8 +17,6 @@
 - [How to run](#how-to-run)
   - [Automated](#automated)
   - [Manual](#manual)
-- [References](#references)
-- [License](#license)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
 
@@ -36,10 +34,12 @@ The data pipeline are built using [Apache Airflow](https://airflow.apache.org/).
 
 ## Pipeline API
 Pipeline API is a Restful API that is built using [Django](https://www.djangoproject.com/) and [Django Rest Framework](https://www.django-rest-framework.org/). The API is used to trigger the data pipeline and to get the status of the data pipeline. The API is defined in the `pipeline_api` folder.
-API Documentation can be found [here](https://github.com/5IF-Data-Engineering/pipeline-api/blob/main/README.md#api-documentation).
+API Documentation can be found [here](https://github.com/5IF-Data-Engineering/pipeline-api/blob/main/README.md#api-documentation). We use [Django](https://www.djangoproject.com/) and [Django Rest Framework](https://www.django-rest-framework.org/) because we want to structure the code in another service
+than Airflow. Django service is exposes on port 8000.
 
 ## Star Schema
-The data is stored in the [PostgreSQL](https://www.postgresql.org/) database. The data is stored in the star schema, and is shown in the figure below.
+The data is stored in a Data Warehouse of [Snowflake](https://www.snowflake.com/), is defined in the `star_schema` folder,
+and is shown in the figure below.
 
 ![Star Schema](./assets/star_schema.png)
 
@@ -47,8 +47,8 @@ The data is stored in the [PostgreSQL](https://www.postgresql.org/) database. Th
 The data pipeline is divided into 4 stages: Ingestion, Staging, Enrichment, and Production.
 
 ## Ingestion
-The bus delay time data is ingested from the 6 Excel spreadsheets from [Toronto Open Data](https://open.toronto.ca/). When the data is ingested, 
-it is also stored in the Redis database to speed up the data pipeline. We divide also the data by year to speed up the data pipeline. The data pipeline is shown in the figure below.
+The bus delay time data is ingested from the 6 Excel spreadsheets from [Toronto Open Data](https://open.toronto.ca/). We use [Pandas](https://pandas.pydata.org/) to read the Excel spreadsheets. When the data is ingested, 
+the Json Response is also stored in the Redis database to speed up the data pipeline. We divide also the data by year to speed up the data pipeline. The data pipeline is shown in the figure below.
 
 ![Bus ingestion](./assets/bus_ingestion.png)
 
@@ -57,7 +57,8 @@ the API call, defined inside the BashOperator. Each BashOperator will execute th
 Inside each small ETL pipeline that we define inside the `pipeline_api`, the data is extracted from [Open Meteo API](https://open-meteo.com/en/docs), then transformed using Pandas, and finally loaded into the MongoDB database. We choose the MongoDB database for the ingestion stage because it is a NoSQL database and flexible, 
 which is suitable for storing the raw data.
 
-The weather data is ingested from the [Open Meteo API](https://open-meteo.com/en/docs). The data is ingested using the [Open Weather Map](https://openweathermap.org/) API. The data is then stored in the MongoDB database. The idea of the data pipeline is much similar to the bus delay time data ingestion. We divide the data by year. We then process the data in parallel. The weather data is also transformed using Pandas and loaded into the MongoDB database.
+The weather data is ingested from the [Open Meteo API](https://open-meteo.com/en/docs). The data is ingested using the [Open Weather Map](https://openweathermap.org/) API. The data is then stored in the MongoDB database. The idea of the data pipeline is much similar to the bus delay time data ingestion. 
+We divide the data by year. We then process the data in parallel. The weather data is also transformed using [Pandas](https://pandas.pydata.org/) and loaded into the MongoDB database.
 
 ## Staging
 
@@ -65,15 +66,25 @@ We want to extract the data from the MongoDB database, transform it, and load it
 
 ![Bus staging](./assets/bus_staging.png)
 
-First, we have to create a table for storing staging data. We extract the data from the MongoDB database. We then aggregate the data by the time, the location and the incident using the MongoDB queries. The aggregated data is loaded into the PostgreSQL database. The DAGs are defined inside the `dags` folder. And the ETL pipelines are triggered by API calling, defined inside the `pipeline_api` folder.
+First, we have to create a table for storing staging data. We extract the data from the MongoDB database. We then aggregate the data by the time, the location and the incident using the MongoDB queries. The aggregated data is loaded into the PostgreSQL database. The DAGs are defined inside the `dags` folder. 
+And the ETL pipelines are triggered by API calling, defined inside the `pipeline_api` folder. We use partitioning by year for the staging database to speed up the data pipeline and to make it easier to join the data in the production environment. Here is the list of partitioned tables:
+
+![Partitioned tables](./assets/partition_table.png)
 
 ## Enrichment
 
-We extract the bus delay data and the weather data from the PostgreSQL database, then join them together.
+We extract the bus delay data and the weather data from the PostgreSQL database, then join them together. And also, we use partitioning by year for the join table. Here is the data pipeline.
+
+![Enrichment](./assets/enrichment.png)
 
 ## Production
 
-We extract the data from the PostgreSQL database, then load it into the star schema on Snowflake. The data pipeline is shown in the figure below.
+We extract the data from the PostgreSQL staging database, then load it into the Data Warehouse on Snowflake. We make the star schema available on Snowflake for analysis on [PowerBI](https://powerbi.microsoft.com/en-us/).
+We use also the DockerOperator for loading the data of the fact table into the Data Warehouse on Snowflake. The DockerOperators are triggered
+by [Airflow](https://airflow.apache.org/) using the [Docker](https://www.docker.com/) container. The Docker image is defined in the `star_schema` folder. The data of the fact table is loaded
+by year to speed up the data pipeline. The data pipeline is shown in the figure below.
+
+![Production](./assets/production.png)
 
 # Presentation
 - Presentation available [here](https://docs.google.com/presentation/d/1dOCUSrn3HKGtE6lQaHa4q8Igz6fDY4AQtRPbG2OfbhQ/edit?usp=sharing)
@@ -82,19 +93,19 @@ We extract the data from the PostgreSQL database, then load it into the star sch
 - [ ] Add more data sources
 - [ ] Add more data pipelines
 - [ ] Add more data analysis
-- [ ] Add more data visualization
+- [ ] Stream processing by Kafka
 
 # Project Submission Checklist
-- [ ] Repository with the code, well documented
+- [x] Repository with the code, well documented
 - [x] Docker-compose file to run the environment
-- [ ] Detailed description of the various steps
+- [x] Detailed description of the various steps
 - [x] Report with the project design steps divided per area
 - [x] Example dataset: the project testing should work offline, i.e., you need to have some sample data points.
 - [x] Slides for the project presentation. You can do them too in markdown too.
 - [x] Use airflow + pandas + mongodb + postgres
 - [x] Using REDIS for speeding up steps
 - [x] STAR schema design includes maintenance upon updates
-- [ ] Creativity: data viz, serious analysis, performance analysis, extensive cleansing.
+- [x] Creativity: data viz, serious analysis, performance analysis, extensive cleansing.
 - [x] Launching docker containers via airflow to schedule job
 
 # How to run
@@ -167,10 +178,6 @@ You need to build the Star Schema image used by DockerOperator using the followi
 docker build -t nmngo248/star-schema:latest ./star_schema
 ```
 
-# References
-
-# License
-
 # Contact
 - [Minh NGO](mailto:ngoc-minh.ngo@insa-lyon.fr)
 - [Yazid SBAI](mailto:yazid.sbai@insa-lyon.fr)
@@ -185,3 +192,8 @@ docker build -t nmngo248/star-schema:latest ./star_schema
 - [Django](https://www.djangoproject.com/)
 - [Django Rest Framework](https://www.django-rest-framework.org/)
 - [PostgreSQL](https://www.postgresql.org/)
+- [Redis](https://redis.io/)
+- [MongoDB](https://www.mongodb.com/)
+- [Pandas](https://pandas.pydata.org/)
+- [PowerBI](https://powerbi.microsoft.com/en-us/)
+- [Snowflake](https://www.snowflake.com/)
