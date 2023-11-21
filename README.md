@@ -23,23 +23,23 @@
 
 # Introduction
 This project is part of the Foundation of Data Engineering course in [INSA Lyon](https://www.insa-lyon.fr/en/). 
-The goal of this project is to build multiple data pipelines to process data from the weather and the bus delay time in Toronto from 2017 to 2022 and make it available for analysis.
+The goal of this project is to build multiple data pipelines to process weather data and bus delay time in Toronto data from 2017 to 2022 and make it available for analysis.
 
 # Architecture
-The architecture of this project is shown in the figure below. The data is ingested from the [Toronto Open Data](https://open.toronto.ca/) and [Open Meteo](https://open-meteo.com/en/docs), is then processed by the data pipeline. The data is then available for analysis.
+The architecture of this project is shown in the figure below. The data is ingested from two sources : the [Toronto Open Data](https://open.toronto.ca/) and [Open Meteo](https://open-meteo.com/en/docs). The data is then processed by the data pipeline and available for analysis.
 
 ![Architecture](./assets/architecture.png)
 
 ## Airflow
-The data pipeline are built using [Apache Airflow](https://airflow.apache.org/). The data pipeline is built using the [DAG](https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#dags) concept in Airflow. The DAGs are defined in the `dags` folder.
+The data pipeline is built using [Apache Airflow](https://airflow.apache.org/) and the [DAG](https://airflow.apache.org/docs/apache-airflow/stable/concepts.html#dags) concept in Airflow. The DAGs are defined in the `dags` folder.
 
 ## Pipeline API
 Pipeline API is a Restful API that is built using [Django](https://www.djangoproject.com/) and [Django Rest Framework](https://www.django-rest-framework.org/). The API is used to trigger the data pipeline and to get the status of the data pipeline. The API is defined in the `pipeline_api` folder.
 API Documentation can be found [here](https://github.com/5IF-Data-Engineering/pipeline-api/blob/main/README.md#api-documentation). We use [Django](https://www.djangoproject.com/) and [Django Rest Framework](https://www.django-rest-framework.org/) because we want to structure the code in another service
-than Airflow. Django service is exposes on port 8000.
+than Airflow. Django service is exposed on port 8000.
 
 ## Star Schema
-The data is stored in a Data Warehouse of [Snowflake](https://www.snowflake.com/), is defined in the `star_schema` folder,
+The data is stored in a Data Warehouse in [Snowflake](https://www.snowflake.com/), is defined in the `star_schema` folder,
 and is shown in the figure below.
 
 ![Star Schema](./assets/star_schema.png)
@@ -48,15 +48,14 @@ and is shown in the figure below.
 The data pipeline is divided into 4 stages: Ingestion, Staging, Enrichment, and Production.
 
 ## Ingestion
-The bus delay time data is ingested from the 6 Excel spreadsheets from [Toronto Open Data](https://open.toronto.ca/). We use [Pandas](https://pandas.pydata.org/) to read the Excel spreadsheets. When the data is ingested, 
+The bus delay time data is ingested from  6 Excel spreadsheets from [Toronto Open Data](https://open.toronto.ca/). We use [Pandas](https://pandas.pydata.org/) to read the Excel spreadsheets. When the data is ingested, 
 the Json Response is also stored in the Redis database to speed up the data pipeline. We divide also the data by year to speed up the data pipeline. The data pipeline is shown in the figure below.
 
 ![Bus ingestion](./assets/bus_ingestion.png)
 
-Each year, we divide the bus data into 4 parts: January to March, April to June, July to September, and October to December. Each part is then processed in parallel. Inside each task, we consider that they are the small ETL pipelines. The small ETL pipelines are triggered by
-the API call, defined inside the BashOperator. Each BashOperator will execute the Shell script to process the data. The Shell script is defined in the `./airflow/scripts` folder.
-Inside each small ETL pipeline that we define inside the `pipeline_api`, the data is extracted from [Open Meteo API](https://open-meteo.com/en/docs), then transformed using Pandas, and finally loaded into the MongoDB database. We choose the MongoDB database for the ingestion stage because it is a NoSQL database and flexible, 
-which is suitable for storing the raw data.
+Each year, we divide the bus data into 4 parts: January to March, April to June, July to September, and October to December. Each part is then processed in parallel. Inside each task, we consider that small ETL pipelines are executed. The small ETL pipelines are triggered by
+the API call, defined inside the BashOperator of the DAG. Each BashOperator will execute a Shell script to process the data. The Shell script is defined in the `./airflow/scripts` folder.
+Inside each small ETL pipeline defined inside the `pipeline_api`, the data is extracted from [Open Meteo API](https://open-meteo.com/en/docs), then transformed using Pandas, and finally loaded into the MongoDB database. We choose the MongoDB database for the ingestion stage because it is a NoSQL database : it has many advantages as flexiblity and is schemaless, which is suitable for storing the raw data.
 
 The weather data is ingested from the [Open Meteo API](https://open-meteo.com/en/docs). The data is ingested using the [Open Weather Map](https://openweathermap.org/) API. The data is then stored in the MongoDB database. The idea of the data pipeline is much similar to the bus delay time data ingestion. 
 We divide the data by year. We then process the data in parallel. The weather data is also transformed using [Pandas](https://pandas.pydata.org/) and loaded into the MongoDB database.
@@ -74,7 +73,7 @@ And the ETL pipelines are triggered by API calling, defined inside the `pipeline
 
 ## Enrichment
 
-We extract the bus delay data and the weather data from the PostgreSQL database, then join them together. And also, we use partitioning by year for the join table. Here is the data pipeline.
+We extract the bus delay data and the weather data from the PostgreSQL database, then join them together. And also, we use partitioning by year for the joined table. Here is the data pipeline.
 
 ![Enrichment](./assets/enrichment.png)
 
