@@ -15,9 +15,9 @@ default_args = {
 }
 
 dag = DAG(
-    'etl_bus_delay_dag',
+    'ingestion_bus_delay_dag',
     default_args=default_args,
-    description='ETL bus delay DAG',
+    description='Ingestion Bus delay DAG',
     schedule_interval=None,
 )
 

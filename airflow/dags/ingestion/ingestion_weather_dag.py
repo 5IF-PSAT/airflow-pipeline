@@ -21,9 +21,9 @@ default_args = {
 }
 
 dag = DAG(
-    dag_id='hourly_etl_weather_dag',
+    dag_id='ingestion_weather_dag',
     default_args=default_args,
-    description='Hourly ETL weather DAG',
+    description='Ingestion weather DAG',
     schedule_interval=None,
 )
 
