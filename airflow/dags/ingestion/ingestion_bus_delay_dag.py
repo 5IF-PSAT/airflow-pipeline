@@ -1,6 +1,8 @@
 import airflow
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
+import requests
 
 HOST = 'pipeline-api'
 PORT = '8000'
@@ -21,60 +23,71 @@ dag = DAG(
     schedule_interval=None,
 )
 
-# Get bus delay data from 01/01/2017 to 31/12/2017
-year = 2017
-task1 = BashOperator(
-    task_id='get_bus_delay_data_2017',
-    bash_command=f'/opt/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+def get_bus_delay(year, **kwargs):
+    ti = kwargs['ti']
+    # Check if data is already cached
+    cached_key = f'ingestion_bus_delay_{year}'
+    cached_data = ti.xcom_pull(key=cached_key, task_ids='get_bus_delay')
+    if cached_data:
+        return cached_data
+    
+    # Fetch data from API
+    url = f'http://{HOST}:{PORT}/ingestion_bus_delay/?year={year}&city={CITY}'
+    response = requests.get(url)
+    data = response.json()
+    # Cache data
+    ti.xcom_push(key=cached_key, value=data)
+    return data
+
+get_bus_delay_2017 = PythonOperator(
+    task_id='get_bus_delay_2017',
+    python_callable=get_bus_delay,
+    op_kwargs={'year': 2017},
     dag=dag,
 )
 
-# Get bus delay data from 01/01/2018 to 31/12/2018
-year = 2018
-task2 = BashOperator(
-    task_id='get_bus_delay_data_2018',
-    bash_command=f'/opt/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+get_bus_delay_2018 = PythonOperator(
+    task_id='get_bus_delay_2018',
+    python_callable=get_bus_delay,
+    op_kwargs={'year': 2018},
     dag=dag,
 )
 
-# Get bus delay data from 01/01/2019 to 31/12/2019
-year = 2019
-task3 = BashOperator(
-    task_id='get_bus_delay_data_2019',
-    bash_command=f'/opt/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+get_bus_delay_2019 = PythonOperator(
+    task_id='get_bus_delay_2019',
+    python_callable=get_bus_delay,
+    op_kwargs={'year': 2019},
     dag=dag,
 )
 
-# Get bus delay data from 01/01/2020 to 31/12/2020
-year = 2020
-task4 = BashOperator(
-    task_id='get_bus_delay_data_2020',
-    bash_command=f'/opt/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+get_bus_delay_2020 = PythonOperator(
+    task_id='get_bus_delay_2020',
+    python_callable=get_bus_delay,
+    op_kwargs={'year': 2020},
     dag=dag,
 )
 
-# Get bus delay data from 01/01/2021 to 31/12/2021
-year = 2021
-task5 = BashOperator(
-    task_id='get_bus_delay_data_2021',
-    bash_command=f'/opt/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+get_bus_delay_2021 = PythonOperator(
+    task_id='get_bus_delay_2021',
+    python_callable=get_bus_delay,
+    op_kwargs={'year': 2021},
     dag=dag,
 )
 
-# Get bus delay data from 01/01/2022 to 31/12/2022
-year = 2022
-task6 = BashOperator(
-    task_id='get_bus_delay_data_2022',
-    bash_command=f'/opt/scripts/bus_delay.sh {HOST} {PORT} {year} {CITY}',
+get_bus_delay_2022 = PythonOperator(
+    task_id='get_bus_delay_2022',
+    python_callable=get_bus_delay,
+    op_kwargs={'year': 2022},
     dag=dag,
 )
 
-# Final task
+# final task
 final_task = BashOperator(
     task_id='final_task',
-    bash_command='echo "ETL bus delay DAG completed"',
+    bash_command='echo "All done!"',
     dag=dag,
-    trigger_rule='all_success'
+    trigger_rule='all_success',
 )
 
-[task1, task2, task3, task4, task5, task6] >> final_task
+# set dependencies
+[get_bus_delay_2017, get_bus_delay_2018, get_bus_delay_2019, get_bus_delay_2020, get_bus_delay_2021, get_bus_delay_2022] >> final_task
