@@ -28,18 +28,16 @@ create_table_task = PostgresOperator(
         CREATE TABLE IF NOT EXISTS staging_weather (
             year integer,
             month integer,
+            day integer NOT NULL,
+            day_of_week varchar(255),
             day_type varchar(255) NOT NULL,
             hour integer NOT NULL,
-            avg_temperature double precision,
-            min_temperature double precision,
-            max_temperature double precision,
-            avg_humidity double precision,
-            avg_rain double precision,
-            max_rain double precision,
-            min_rain double precision,
-            avg_wind_speed double precision,
-            max_wind_speed double precision,
-            min_wind_speed double precision
+            temperature double precision,
+            humidity double precision,
+            precipitation double precision,
+            rain double precision,
+            snowfall double precision,
+            windspeed double precision
         ) PARTITION BY LIST (year);
 
         CREATE TABLE IF NOT EXISTS staging_weather_2017 PARTITION OF
@@ -65,6 +63,9 @@ create_table_task = PostgresOperator(
 
         CREATE INDEX IF NOT EXISTS staging_weather_full_idx
         ON staging_weather (year, month, day_type, hour);
+
+        CREATE INDEX IF NOT EXISTS staging_weather_full_2_idx
+        ON staging_weather (year, month, day, hour);
     """,
     dag=dag,
     autocommit=True,

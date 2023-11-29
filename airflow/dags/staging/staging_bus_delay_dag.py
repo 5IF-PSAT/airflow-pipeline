@@ -28,18 +28,16 @@ create_table_task = PostgresOperator(
         CREATE TABLE IF NOT EXISTS staging_bus_delay (
             year integer,
             month integer,
+            day integer NOT NULL,
+            day_of_week varchar(255),
             day_type varchar(255) NOT NULL,
             hour integer,
             location varchar(255),
             incident varchar(255),
-            avg_delay double precision,
-            min_delay double precision, 
-            max_delay double precision, 
-            count_delay integer,
-            avg_gap double precision,
-            min_gap double precision,
-            max_gap double precision,
-            count_gap integer
+            delay double precision,
+            gap double precision,
+            direction varchar(255),
+            vehicle varchar(255)
         ) PARTITION BY LIST (year);
 
         CREATE TABLE IF NOT EXISTS staging_bus_delay_2017 PARTITION OF 
@@ -65,6 +63,9 @@ create_table_task = PostgresOperator(
 
         CREATE INDEX IF NOT EXISTS staging_bus_delay_full_idx
         ON staging_bus_delay (year, month, day_type, hour);
+
+        CREATE INDEX IF NOT EXISTS staging_bus_delay_full_2_idx
+        ON staging_bus_delay (year, month, day, hour);
     """,
     dag=dag,
     autocommit=True,

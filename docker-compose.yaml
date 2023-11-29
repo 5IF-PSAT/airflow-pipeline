@@ -73,6 +73,8 @@ services:
       - REDIS_DB=0
       - PYTHONUNBUFFERED=1
       - TZ=Europe/Paris
+    volumes:
+      - ./pipeline_api/bus_data:/app/bus_data
     env_file:
       - .env_api 
     hostname: pipeline-api
