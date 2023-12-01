@@ -75,6 +75,7 @@ services:
       - TZ=Europe/Paris
     volumes:
       - ./pipeline_api/bus_data:/app/bus_data
+      - ./pipeline_api/logs:/app/logs
     env_file:
       - .env_api 
     hostname: pipeline-api
