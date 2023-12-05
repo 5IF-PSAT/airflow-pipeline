@@ -86,7 +86,7 @@ final_task = BashOperator(
     task_id='final_task',
     bash_command='echo "All done!"',
     dag=dag,
-    trigger_rule='all_success',
+    trigger_rule='all_success'
 )
 
 # set dependencies

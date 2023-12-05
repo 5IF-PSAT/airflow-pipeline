@@ -168,9 +168,10 @@ docker exec -it postgres psql -U postgres -c "CREATE DATABASE deng_staging;"
 
 Add the following connections in the Airflow webserver:
 - `postgres_staging`: PostgreSQL for staging connection
-- `postgres_production`: PostgreSQL for production connection
+- `spark-default`: Spark connection
 ```bash
 docker exec -it airflow-webserver airflow connections add postgres_staging --conn-uri postgresql://postgres:@postgres:5432/deng_staging
+docker exec -it airflow-webserver airflow connections add spark_default --conn-uri spark://spark-master:7077
 ```
 
 You need to build the Star Schema image used by DockerOperator using the following command:

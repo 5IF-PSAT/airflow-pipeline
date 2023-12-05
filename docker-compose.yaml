@@ -38,19 +38,6 @@ services:
       - "27017:27017"
     volumes:
       - ./tmp/mongo-data:/data/db
-  neo:
-    image: neo4j:5.1.0
-    hostname: neo
-    container_name: neo
-    restart: always
-    environment:
-      - NEO4J_AUTH=none
-      - NEO4J_server.bolt.advertised_address=neo:7687
-    ports:
-        - "7474:7474"
-        - "7687:7687"
-    volumes:
-      - ./tmp/neo4j-data:/data
 
   pipeline-api:
     build:
@@ -120,11 +107,17 @@ services:
     extends:
       file: airflow-compose.yaml
       service: flower
-  docker-socket-proxy:
-    container_name: docker-socket-proxy
+
+  spark-master:
+    container_name: spark-master
     extends:
-      file: docker-socket-proxy.yaml
-      service: docker-socket-proxy
+      file: spark-compose.yaml
+      service: spark-master
+  spark-worker:
+    container_name: spark-worker
+    extends:
+      file: spark-compose.yaml
+      service: spark-worker
 networks:
   default:
     name: meteorif
