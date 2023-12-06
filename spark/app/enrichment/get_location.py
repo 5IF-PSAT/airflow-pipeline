@@ -2,75 +2,103 @@
 Get location data from staging table and save to parquet
 """
 
-import sys
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType
 from pyspark.sql.functions import monotonically_increasing_id
 import geocoder
 
-# Parameters
-year = sys.argv[1]
-
 # Constants
 API_GOOGLE_KEY = "API_GOOGLE_KEY"
 
 # Connect to Postgres
 spark = SparkSession.builder.appName("GetLocation") \
-    .config("spark.master", "spark://spark-master:7077") \
-    .config("spark.jars", "/opt/bitnami/spark/jars/postgresql-42.2.20.jar") \
-    .config("spark.driver.memory", "4g") \
+    .config("spark.hadoop.fs.defaultFS", "hdfs://namenode:8020") \
+    .config("spark.hadoop.dfs.replication", "1") \
     .getOrCreate()
+
+# Spark Context
+sc = spark.sparkContext
+sc.setLogLevel("ERROR")
 
 # Read data from staging table
 database_url = "jdbc:postgresql://postgres:5432/deng_staging"
 properties = {
     "user": "postgres",
+    "password": "",
     "driver": "org.postgresql.Driver"
 }
 
 bus_delay_df = spark.read \
-    .jdbc(url=database_url, table=f"public.staging_bus_delay_{year}", properties=properties)
+    .jdbc(url=database_url, table=f"public.enrichment_bus_delay", properties=properties)
 
 # Get location data
 location_df = bus_delay_df \
-    .select("location", "location_slug") \
+    .select("location_slug") \
     .distinct() \
     .orderBy("location_slug")
 
-# Unslugify location data
-location_df = location_df \
-    .withColumn("location", col("location_slug").replace("-", " "))
+def unslug(text):
+    """
+    Convert slug to text
+    """
+    tmp = text.replace("-", " ")
+    return tmp
+
+# Define a UDF for unslug
+unslug_udf = spark.udf.register("unslug_udf", unslug, StringType())
 
 # Add id column
 location_df = location_df.withColumn("id", monotonically_increasing_id())
 
+# Add location column
+location_df = location_df.withColumn("location", unslug_udf(col("location_slug")))
+
 # Get geolocation data
 # Set latitude and longitude to None if geolocation data is not found
-location_df = location_df.toPandas()
 
-location_df["latlng"] = location_df.apply(lambda row: geocoder.google(f"{row["location"]}, Toronto, Ontario, Canada", 
-                                                                      key=API_GOOGLE_KEY).latlng, axis=1)
-location_df["latitude"] = location_df.apply(lambda row: row["latlng"][0] if row["latlng"] else None, axis=1)
-location_df["longitude"] = location_df.apply(lambda row: row["latlng"][1] if row["latlng"] else None, axis=1)
+def get_geocode(location):
+    """
+    Get geolocation data from Google Maps API
+    """
+    g = geocoder.google("{}, Toronto, Ontario, Canada".format(location), key=API_GOOGLE_KEY)
+    if g.ok:
+        return (g.latlng[0], g.latlng[1])
+    else:
+        return (None, None)
+    
+# Define a UDF for get_geocode
+get_geocode_udf = spark.udf.register("get_geocode_udf", get_geocode, StructType([
+    StructField("latitude", DoubleType(), True),
+    StructField("longitude", DoubleType(), True)
+]))
 
-# Drop latlng column
-location_df = location_df.drop(columns=["latlng"])
+# Add geolocation column
+location_df = location_df.withColumn("geolocation", get_geocode_udf(col("location")))
 
-# Schema for location data
-schema = StructType([
-    StructField("id", IntegerType(), True),
-    StructField("location", StringType(), True),
-    StructField("location_slug", StringType(), True),
+location_df.show()
+
+# Save to Parquet
+output_path = "hdfs://namenode:8020/output/location_tmp.parquet"
+location_df.coalesce(1).write.parquet(output_path, mode="overwrite")
+
+location_df = location_df.withColumn("latitude", col("geolocation.latitude"))
+location_df = location_df.withColumn("longitude", col("geolocation.longitude"))
+
+# Drop geolocation column
+location_df = location_df.drop("geolocation")
+
+# Location schema
+location_schema = StructType([
+    StructField("location_slug", StringType(), False),
+    StructField("id", IntegerType(), False),
+    StructField("location", StringType(), False),
     StructField("latitude", DoubleType(), True),
     StructField("longitude", DoubleType(), True)
 ])
 
-# Convert back to Spark DataFrame
-location_df = spark.createDataFrame(location_df, schema=schema)
+# Write to Parquet
+location_df.coalesce(1).write.parquet("hdfs://namenode:8020/output/location.parquet", mode="overwrite")
 
-# Write data to parquet
-location_df.coalesce(1).write.parquet(f"/opt/bitnami/spark/resources/data/location_{year}.parquet", mode="overwrite", schema=schema)
-
-# Stop Spark
+# Spark Stop
 spark.stop()

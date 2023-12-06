@@ -14,9 +14,9 @@ default_args = {
 }
 
 dag = DAG(
-    'get_location_dag',
+    'get_incident_dag',
     default_args=default_args,
-    description='Get location data',
+    description='Get incident data',
     schedule_interval=None,
     start_date=datetime(2021, 1, 1),
 )
@@ -41,7 +41,7 @@ create_table_task = PostgresOperator(
             gap double precision,
             direction varchar(255),
             vehicle varchar(255),
-            location_slug varchar(255)
+            incident_slug varchar(255)
         ) PARTITION BY LIST (year);
 
         CREATE TABLE IF NOT EXISTS enrichment_bus_delay_2017 PARTITION OF 
@@ -75,9 +75,9 @@ create_table_task = PostgresOperator(
     autocommit=True,
 )
 
-clean_location = SparkSubmitOperator(
-    task_id='clean_location',
-    application='/opt/bitnami/spark/app/enrichment/clean_location.py',
+clean_incident = SparkSubmitOperator(
+    task_id='clean_incident',
+    application='/opt/bitnami/spark/app/enrichment/clean_incident.py',
     conn_id='spark_default',
     dag=dag,
     trigger_rule='none_failed',
@@ -87,9 +87,9 @@ clean_location = SparkSubmitOperator(
     verbose=True
 )
 
-get_location = SparkSubmitOperator(
-    task_id='get_location',
-    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+get_incident = SparkSubmitOperator(
+    task_id='get_incident',
+    application='/opt/bitnami/spark/app/enrichment/get_incident.py',
     conn_id='spark_default',
     dag=dag,
     trigger_rule='none_failed',
@@ -102,4 +102,4 @@ get_location = SparkSubmitOperator(
 end = DummyOperator(task_id='end', dag=dag, trigger_rule='all_success')
 
 # DAG dependencies
-start >> create_table_task >> clean_location >> get_location >> end
+start >> create_table_task >> clean_incident >> get_incident >> end

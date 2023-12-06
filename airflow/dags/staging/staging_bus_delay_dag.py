@@ -25,6 +25,7 @@ create_table_task = PostgresOperator(
     task_id='create_table_task',
     postgres_conn_id='postgres_staging',
     sql=f"""
+        DROP TABLE IF EXISTS staging_bus_delay;
         CREATE TABLE IF NOT EXISTS staging_bus_delay (
             year integer,
             month integer,

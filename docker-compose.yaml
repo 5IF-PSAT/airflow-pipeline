@@ -39,37 +39,37 @@ services:
     volumes:
       - ./tmp/mongo-data:/data/db
 
-  pipeline-api:
-    build:
-      context: ./pipeline_api
-      dockerfile: Dockerfile
-    image: nmngo248/pipeline-api:latest
-    container_name: pipeline-api
-    ports:
-      - "8000:8000"
-    environment:
-      - MONGO_HOST=mongo
-      - MONGO_PORT=27017
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB_STAGING=deng_staging
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_DB=0
-      - PYTHONUNBUFFERED=1
-      - TZ=Europe/Paris
-    volumes:
-      - ./pipeline_api/bus_data:/app/bus_data
-      - ./pipeline_api/logs:/app/logs
-    env_file:
-      - .env_api 
-    hostname: pipeline-api
-    depends_on:
-      - mongo
-      - postgres
-      - redis
+  # pipeline-api:
+  #   build:
+  #     context: ./pipeline_api
+  #     dockerfile: Dockerfile
+  #   image: nmngo248/pipeline-api:latest
+  #   container_name: pipeline-api
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - MONGO_HOST=mongo
+  #     - MONGO_PORT=27017
+  #     - POSTGRES_HOST=postgres
+  #     - POSTGRES_PORT=5432
+  #     - POSTGRES_DB_STAGING=deng_staging
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+  #     - REDIS_DB=0
+  #     - PYTHONUNBUFFERED=1
+  #     - TZ=Europe/Paris
+  #   volumes:
+  #     - ./pipeline_api/bus_data:/app/bus_data
+  #     - ./pipeline_api/logs:/app/logs
+  #   env_file:
+  #     - .env_api 
+  #   hostname: pipeline-api
+  #   depends_on:
+  #     - mongo
+  #     - postgres
+  #     - redis
 
   postgres-airflow:
     container_name: postgres-airflow
@@ -107,6 +107,39 @@ services:
     extends:
       file: airflow-compose.yaml
       service: flower
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    ports:
+      - "9870:9870"
+    volumes:
+      - ./tmp/hadoop-namenode:/hadoop/dfs/name
+      - ./hadoop/data:/hadoop-data
+    hostname: namenode
+    environment:
+      CLUSTER_NAME: hadoop
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    volumes:
+      - ./tmp/hadoop-datanode:/hadoop/dfs/data
+      - ./hadoop/data:/hadoop-data
+    hostname: datanode
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+      CLUSTER_NAME: hadoop
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    container_name: resourcemanager
+    ports:
+      - "8088:8088"
+    hostname: resourcemanager
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870 datanode:9864"
+      CLUSTER_NAME: hadoop
 
   spark-master:
     container_name: spark-master
