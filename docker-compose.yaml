@@ -123,23 +123,27 @@ services:
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     container_name: datanode
+    environment:
+      CLUSTER_NAME: hadoop
+      CORE_CONF_fs_defaultFS: hdfs://namenode:8020
     volumes:
       - ./tmp/hadoop-datanode:/hadoop/dfs/data
-      - ./hadoop/data:/hadoop-data
-    hostname: datanode
-    environment:
-      SERVICE_PRECONDITION: "namenode:9870"
-      CLUSTER_NAME: hadoop
+    depends_on:
+      - namenode
 
-  resourcemanager:
-    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
-    container_name: resourcemanager
-    ports:
-      - "8088:8088"
-    hostname: resourcemanager
-    environment:
-      SERVICE_PRECONDITION: "namenode:9870 datanode:9864"
-      CLUSTER_NAME: hadoop
+  # resourcemanager:
+  #   image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+  #   container_name: resourcemanager
+  #   ports:
+  #     - "8088:8088"
+  #   hostname: resourcemanager
+  #   environment:
+  #     CLUSTER_NAME: hadoop
+  #     CORE_CONF_fs_defaultFS: hdfs://namenode:8020
+  #     YARN_CONF_yarn_resourcemanager_hostname: resourcemanager
+  #   depends_on:
+  #     - namenode
+  #     - datanode
 
   spark-master:
     container_name: spark-master

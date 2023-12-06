@@ -4,7 +4,7 @@ Get location data from staging table and save to parquet
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DoubleType
+from pyspark.sql.types import StructType, StructField, StringType, DoubleType
 from pyspark.sql.functions import monotonically_increasing_id
 import geocoder
 
@@ -88,14 +88,7 @@ location_df = location_df.withColumn("longitude", col("geolocation.longitude"))
 # Drop geolocation column
 location_df = location_df.drop("geolocation")
 
-# Location schema
-location_schema = StructType([
-    StructField("location_slug", StringType(), False),
-    StructField("id", IntegerType(), False),
-    StructField("location", StringType(), False),
-    StructField("latitude", DoubleType(), True),
-    StructField("longitude", DoubleType(), True)
-])
+location_df.show()
 
 # Write to Parquet
 location_df.coalesce(1).write.parquet("hdfs://namenode:8020/output/location.parquet", mode="overwrite")
