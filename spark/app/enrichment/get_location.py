@@ -2,11 +2,15 @@
 Get location data from staging table and save to parquet
 """
 
+import sys
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
-from pyspark.sql.types import StructType, StructField, StringType, DoubleType
-from pyspark.sql.functions import monotonically_increasing_id
+from pyspark.sql.types import StructType, StructField, DoubleType
 import geocoder
+
+# Parameters
+start_id = int(sys.argv[1])
+end_id = int(sys.argv[2])
 
 # Constants
 API_GOOGLE_KEY = "API_GOOGLE_KEY"
@@ -21,38 +25,14 @@ spark = SparkSession.builder.appName("GetLocation") \
 sc = spark.sparkContext
 sc.setLogLevel("ERROR")
 
-# Read data from staging table
-database_url = "jdbc:postgresql://postgres:5432/deng_staging"
-properties = {
-    "user": "postgres",
-    "password": "",
-    "driver": "org.postgresql.Driver"
-}
-
-bus_delay_df = spark.read \
-    .jdbc(url=database_url, table=f"public.enrichment_bus_delay", properties=properties)
-
 # Get location data
-location_df = bus_delay_df \
-    .select("location_slug") \
-    .distinct() \
-    .orderBy("location_slug")
+input_path = "hdfs://namenode:8020/output/location_no_geo.parquet"
+location_df = spark.read.parquet(input_path)
 
-def unslug(text):
-    """
-    Convert slug to text
-    """
-    tmp = text.replace("-", " ")
-    return tmp
-
-# Define a UDF for unslug
-unslug_udf = spark.udf.register("unslug_udf", unslug, StringType())
-
-# Add id column
-location_df = location_df.withColumn("id", monotonically_increasing_id())
-
-# Add location column
-location_df = location_df.withColumn("location", unslug_udf(col("location_slug")))
+# Filter data
+location_df = location_df \
+    .filter(col("id") >= start_id) \
+    .filter(col("id") < end_id)
 
 # Get geolocation data
 # Set latitude and longitude to None if geolocation data is not found
@@ -78,10 +58,6 @@ location_df = location_df.withColumn("geolocation", get_geocode_udf(col("locatio
 
 location_df.show()
 
-# Save to Parquet
-output_path = "hdfs://namenode:8020/output/location_tmp.parquet"
-location_df.coalesce(1).write.parquet(output_path, mode="overwrite")
-
 location_df = location_df.withColumn("latitude", col("geolocation.latitude"))
 location_df = location_df.withColumn("longitude", col("geolocation.longitude"))
 
@@ -91,7 +67,7 @@ location_df = location_df.drop("geolocation")
 location_df.show()
 
 # Write to Parquet
-location_df.coalesce(1).write.parquet("hdfs://namenode:8020/output/location.parquet", mode="overwrite")
+location_df.coalesce(1).write.parquet("hdfs://namenode:8020/output/location_{}_{}.parquet".format(start_id, end_id), mode="overwrite")
 
 # Spark Stop
 spark.stop()

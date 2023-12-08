@@ -2,7 +2,6 @@ from airflow import DAG
 from datetime import datetime
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-from airflow.operators.postgres_operator import PostgresOperator
 
 default_args = {
     'owner': 'airflow',
@@ -23,78 +22,122 @@ dag = DAG(
 
 start = DummyOperator(task_id='start', dag=dag)
 
-create_table_task = PostgresOperator(
-    task_id='create_table_task',
-    postgres_conn_id='postgres_staging',
-    sql=f"""
-        DROP TABLE IF EXISTS enrichment_bus_delay;
-        CREATE TABLE IF NOT EXISTS enrichment_bus_delay (
-            year integer,
-            month integer,
-            day integer NOT NULL,
-            day_of_week varchar(255),
-            day_type varchar(255) NOT NULL,
-            hour integer,
-            location varchar(255),
-            incident varchar(255),
-            delay double precision,
-            gap double precision,
-            direction varchar(255),
-            vehicle varchar(255),
-            location_slug varchar(255)
-        ) PARTITION BY LIST (year);
-
-        CREATE TABLE IF NOT EXISTS enrichment_bus_delay_2017 PARTITION OF 
-        enrichment_bus_delay FOR VALUES IN (2017);
-
-        CREATE TABLE IF NOT EXISTS enrichment_bus_delay_2018 PARTITION OF
-        enrichment_bus_delay FOR VALUES IN (2018);
-
-        CREATE TABLE IF NOT EXISTS enrichment_bus_delay_2019 PARTITION OF
-        enrichment_bus_delay FOR VALUES IN (2019);
-
-        CREATE TABLE IF NOT EXISTS enrichment_bus_delay_2020 PARTITION OF
-        enrichment_bus_delay FOR VALUES IN (2020);
-
-        CREATE TABLE IF NOT EXISTS enrichment_bus_delay_2021 PARTITION OF
-        enrichment_bus_delay FOR VALUES IN (2021);
-
-        CREATE TABLE IF NOT EXISTS enrichment_bus_delay_2022 PARTITION OF
-        enrichment_bus_delay FOR VALUES IN (2022);
-
-        CREATE INDEX IF NOT EXISTS enrichment_bus_delay_year_idx 
-        ON enrichment_bus_delay (year);
-
-        CREATE INDEX IF NOT EXISTS enrichment_bus_delay_full_idx
-        ON enrichment_bus_delay (year, month, day_type, hour);
-
-        CREATE INDEX IF NOT EXISTS enrichment_bus_delay_full_2_idx
-        ON enrichment_bus_delay (year, month, day, hour);
-    """,
-    dag=dag,
-    autocommit=True,
-)
-
-clean_location = SparkSubmitOperator(
-    task_id='clean_location',
-    application='/opt/bitnami/spark/app/enrichment/clean_location.py',
+get_location_1 = SparkSubmitOperator(
+    task_id='get_location_1',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["48220", "49220"],
     conn_id='spark_default',
     dag=dag,
-    trigger_rule='none_failed',
-    jars='/opt/bitnami/spark/jars/postgresql-42.2.23.jar',
-    driver_class_path='/opt/bitnami/spark/jars/postgresql-42.2.23.jar',
     conf={'spark.master': 'spark://spark-master:7077'},
     verbose=True
 )
 
-get_location = SparkSubmitOperator(
-    task_id='get_location',
+get_location_2 = SparkSubmitOperator(
+    task_id='get_location_2',
     application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["49220", "50220"],
     conn_id='spark_default',
     dag=dag,
-    trigger_rule='none_failed',
-    jars='/opt/bitnami/spark/jars/postgresql-42.2.23.jar',
-    driver_class_path='/opt/bitnami/spark/jars/postgresql-42.2.23.jar',
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_3 = SparkSubmitOperator(
+    task_id='get_location_3',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["50220", "51220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_4 = SparkSubmitOperator(
+    task_id='get_location_4',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["51220", "52220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_5 = SparkSubmitOperator(
+    task_id='get_location_5',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["52220", "53220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_6 = SparkSubmitOperator(
+    task_id='get_location_6',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["53220", "54220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_7 = SparkSubmitOperator(
+    task_id='get_location_7',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["54220", "55220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_8 = SparkSubmitOperator(
+    task_id='get_location_8',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["55220", "56220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_9 = SparkSubmitOperator(
+    task_id='get_location_9',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["56220", "57220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_10 = SparkSubmitOperator(
+    task_id='get_location_10',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["57220", "58220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_11 = SparkSubmitOperator(
+    task_id='get_location_11',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["58220", "59220"],
+    conn_id='spark_default',
+    dag=dag,
+    conf={'spark.master': 'spark://spark-master:7077'},
+    verbose=True
+)
+
+get_location_12 = SparkSubmitOperator(
+    task_id='get_location_12',
+    application='/opt/bitnami/spark/app/enrichment/get_location.py',
+    application_args=["59220", "60220"],
+    conn_id='spark_default',
+    dag=dag,
     conf={'spark.master': 'spark://spark-master:7077'},
     verbose=True
 )
@@ -102,4 +145,7 @@ get_location = SparkSubmitOperator(
 end = DummyOperator(task_id='end', dag=dag, trigger_rule='all_success')
 
 # DAG dependencies
-start >> create_table_task >> clean_location >> get_location >> end
+start >> get_location_1 >> get_location_4 >> get_location_7 >> get_location_10
+start >> get_location_2 >> get_location_5 >> get_location_8 >> get_location_11
+start >> get_location_3 >> get_location_6 >> get_location_9 >> get_location_12
+[get_location_10, get_location_11, get_location_12] >> end
