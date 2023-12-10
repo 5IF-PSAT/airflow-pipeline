@@ -24,7 +24,7 @@ start = DummyOperator(task_id='start', dag=dag)
 
 create_enrichment_bus = SparkSubmitOperator(
     task_id='create_enrichment_bus',
-    application='/opt/bitnami/spark/app/enrichment/create_enrichment_bus.py',
+    application='/opt/bitnami/spark/app/production/create_enrichment_bus.py',
     conn_id='spark_default',
     dag=dag,
     trigger_rule='none_failed',
@@ -36,7 +36,7 @@ create_enrichment_bus = SparkSubmitOperator(
 
 join_bus_weather = SparkSubmitOperator(
     task_id='join_bus_weather',
-    application='/opt/bitnami/spark/app/enrichment/join_bus_weather.py',
+    application='/opt/bitnami/spark/app/production/join_bus_weather.py',
     conn_id='spark_default',
     dag=dag,
     trigger_rule='none_failed',
@@ -48,7 +48,7 @@ join_bus_weather = SparkSubmitOperator(
 
 join_fact_dimension = SparkSubmitOperator(
     task_id='join_fact_dimension',
-    application='/opt/bitnami/spark/app/enrichment/join_fact_dimension.py',
+    application='/opt/bitnami/spark/app/production/join_fact_dimension.py',
     conn_id='spark_default',
     dag=dag,
     trigger_rule='none_failed',

@@ -24,7 +24,7 @@ start = DummyOperator(task_id='start', dag=dag)
 
 merge_location = SparkSubmitOperator(
     task_id='merge_location',
-    application='/opt/bitnami/spark/app/enrichment/merge_location.py',
+    application='/opt/bitnami/spark/app/production/merge_location.py',
     conn_id='spark_default',
     dag=dag,
     conf={'spark.master': 'spark://spark-master:7077'},

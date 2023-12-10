@@ -39,4 +39,7 @@ RUN export JAVA_HOME
 USER airflow
 
 # Install Python packages
-RUN pip install apache-airflow-providers-mongo==2.3.1 apache-airflow-providers-apache-spark==4.4.0 geocoder==1.38.1
+RUN pip install apache-airflow-providers-mongo==2.3.1 \
+    apache-airflow-providers-apache-spark==4.4.0 \ 
+    geocoder==1.38.1 \
+    apache-airflow-providers-snowflake==5.1.2
