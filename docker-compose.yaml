@@ -39,37 +39,37 @@ services:
     volumes:
       - ./tmp/mongo-data:/data/db
 
-  # pipeline-api:
-  #   build:
-  #     context: ./pipeline_api
-  #     dockerfile: Dockerfile
-  #   image: nmngo248/pipeline-api:latest
-  #   container_name: pipeline-api
-  #   ports:
-  #     - "8000:8000"
-  #   environment:
-  #     - MONGO_HOST=mongo
-  #     - MONGO_PORT=27017
-  #     - POSTGRES_HOST=postgres
-  #     - POSTGRES_PORT=5432
-  #     - POSTGRES_DB_STAGING=deng_staging
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=
-  #     - REDIS_HOST=redis
-  #     - REDIS_PORT=6379
-  #     - REDIS_DB=0
-  #     - PYTHONUNBUFFERED=1
-  #     - TZ=Europe/Paris
-  #   volumes:
-  #     - ./pipeline_api/bus_data:/app/bus_data
-  #     - ./pipeline_api/logs:/app/logs
-  #   env_file:
-  #     - .env_api 
-  #   hostname: pipeline-api
-  #   depends_on:
-  #     - mongo
-  #     - postgres
-  #     - redis
+  pipeline-api:
+    build:
+      context: ./pipeline_api
+      dockerfile: Dockerfile
+    image: nmngo248/pipeline-api:latest
+    container_name: pipeline-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB_STAGING=deng_staging
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - PYTHONUNBUFFERED=1
+      - TZ=Europe/Paris
+    volumes:
+      - ./pipeline_api/bus_data:/app/bus_data
+      - ./pipeline_api/logs:/app/logs
+    env_file:
+      - .env_api 
+    hostname: pipeline-api
+    depends_on:
+      - mongo
+      - postgres
+      - redis
 
   postgres-airflow:
     container_name: postgres-airflow
