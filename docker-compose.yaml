@@ -1,75 +1,17 @@
 services:
-  postgres:
-    image: postgres:13.8-bullseye
-    hostname: postgres
-    container_name: postgres
+  neo:
+    image: neo4j:5.1.0
+    hostname: neo
+    container_name: neo
     restart: always
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-      PGDATA: /var/lib/postgresql/data
+      - NEO4J_AUTH=none
+      - NEO4J_server.bolt.advertised_address=neo:7687
     ports:
-      - "5432:5432"
+        - "7474:7474"
+        - "7687:7687"
     volumes:
-      - ./tmp/postgres-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      retries: 5
-  redis: 
-    image: redis:6.0.16-bullseye
-    hostname: redis
-    container_name: redis
-    restart: always
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./tmp/redis-data:/data
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 30s
-      retries: 50
-  mongo:
-    image: mongo:6.0.2-focal
-    hostname: mongo
-    container_name: mongo
-    restart: always
-    ports:
-      - "27017:27017"
-    volumes:
-      - ./tmp/mongo-data:/data/db
-
-  pipeline-api:
-    build:
-      context: ./pipeline_api
-      dockerfile: Dockerfile
-    image: nmngo248/pipeline-api:latest
-    container_name: pipeline-api
-    ports:
-      - "8000:8000"
-    environment:
-      - MONGO_HOST=mongo
-      - MONGO_PORT=27017
-      - POSTGRES_HOST=postgres
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB_STAGING=deng_staging
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - REDIS_DB=0
-      - PYTHONUNBUFFERED=1
-      - TZ=Europe/Paris
-    volumes:
-      - ./pipeline_api/bus_data:/app/bus_data
-      - ./pipeline_api/logs:/app/logs
-    env_file:
-      - .env_api 
-    hostname: pipeline-api
-    depends_on:
-      - mongo
-      - postgres
-      - redis
+      - ./tmp/neo4j-data:/data
 
   postgres-airflow:
     container_name: postgres-airflow
@@ -131,20 +73,6 @@ services:
     depends_on:
       - namenode
 
-  # resourcemanager:
-  #   image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
-  #   container_name: resourcemanager
-  #   ports:
-  #     - "8088:8088"
-  #   hostname: resourcemanager
-  #   environment:
-  #     CLUSTER_NAME: hadoop
-  #     CORE_CONF_fs_defaultFS: hdfs://namenode:8020
-  #     YARN_CONF_yarn_resourcemanager_hostname: resourcemanager
-  #   depends_on:
-  #     - namenode
-  #     - datanode
-
   spark-master:
     container_name: spark-master
     extends:
@@ -157,4 +85,4 @@ services:
       service: spark-worker
 networks:
   default:
-    name: meteorif
+    name: wine-network

@@ -32,7 +32,6 @@ services:
     hostname: spark-worker
     container_name: spark-worker
     ports:
-      - "8881:8881"
       - "8082:8082"
     environment:
       <<: *spark-common-env

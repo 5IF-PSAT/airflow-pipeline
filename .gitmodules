@@ -1,3 +1,0 @@
-[submodule "pipeline_api"]
-	path = pipeline_api
-	url = https://github.com/5IF-Data-Engineering/pipeline-api.git
