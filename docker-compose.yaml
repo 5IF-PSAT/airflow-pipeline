@@ -1,77 +1,27 @@
 services:
-  neo:
-    image: neo4j:5.1.0
-    hostname: neo
-    container_name: neo
-    restart: always
-    environment:
-      - NEO4J_AUTH=none
-      - NEO4J_server.bolt.advertised_address=neo:7687
-    ports:
-        - "7474:7474"
-        - "7687:7687"
-    volumes:
-      - ./tmp/neo4j-data:/data
 
-  postgres-airflow:
-    container_name: postgres-airflow
-    extends:
-      file: airflow-compose.yaml
-      service: postgres-airflow
-  redis-airflow:
-    container_name: redis-airflow
-    extends:
-      file: airflow-compose.yaml
-      service: redis-airflow
-  airflow-webserver:
-    container_name: airflow-webserver
-    extends:
-      file: airflow-compose.yaml
-      service: airflow-webserver
-  airflow-scheduler:
-    container_name: airflow-scheduler
-    extends:
-      file: airflow-compose.yaml
-      service: airflow-scheduler
-  airflow-worker:
-    container_name: airflow-worker
-    extends:
-      file: airflow-compose.yaml
-      service: airflow-worker  
-  airflow-init:
-    container_name: airflow-init
-    profiles: ["init"]
-    extends:
-      file: airflow-compose.yaml
-      service: airflow-init
-  flower:
-    container_name: airflow-flower
-    extends:
-      file: airflow-compose.yaml
-      service: flower
+  # namenode:
+  #   image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+  #   container_name: namenode
+  #   ports:
+  #     - "9870:9870"
+  #   volumes:
+  #     - ./tmp/hadoop-namenode:/hadoop/dfs/name
+  #     - ./hadoop/data:/hadoop-data
+  #   hostname: namenode
+  #   environment:
+  #     CLUSTER_NAME: hadoop
 
-  namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
-    container_name: namenode
-    ports:
-      - "9870:9870"
-    volumes:
-      - ./tmp/hadoop-namenode:/hadoop/dfs/name
-      - ./hadoop/data:/hadoop-data
-    hostname: namenode
-    environment:
-      CLUSTER_NAME: hadoop
-
-  datanode:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: datanode
-    environment:
-      CLUSTER_NAME: hadoop
-      CORE_CONF_fs_defaultFS: hdfs://namenode:8020
-    volumes:
-      - ./tmp/hadoop-datanode:/hadoop/dfs/data
-    depends_on:
-      - namenode
+  # datanode:
+  #   image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+  #   container_name: datanode
+  #   environment:
+  #     CLUSTER_NAME: hadoop
+  #     CORE_CONF_fs_defaultFS: hdfs://namenode:8020
+  #   volumes:
+  #     - ./tmp/hadoop-datanode:/hadoop/dfs/data
+  #   depends_on:
+  #     - namenode
 
   spark-master:
     container_name: spark-master
